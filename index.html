@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Jurnal Mengajar Informatika</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    
+</head>
+<body class="relative min-h-screen">
+    <!-- Background Image -->
+    <div class="fixed inset-0 z-0">
+        <img src="513677524_122137605554750458_2873730744669412178_1.jpg" alt="Background" class="w-full h-full object-cover object-center" style="filter: brightness(0.6) blur(0px);">
+        <div class="absolute inset-0 bg-gradient-to-br from-slate-900/80 via-purple-900/60 to-slate-900/80"></div>
+    </div>
+    <div class="container mx-auto px-4 py-8 relative z-10">
+        <!-- Header with Logout -->
+        <div class="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl shadow-xl p-6 mb-8">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div id="logoPreview"></div>
+                    <div>
+                        <h1 class="text-3xl font-bold text-white">📚 Sistem Jurnal Mengajar Informatika</h1>
+                        <p id="teacherName" class="text-purple-100 mt-2">-</p>
+                    </div>
+                </div>
+                <div class="flex flex-col items-end gap-3">
+                    <div class="text-right bg-white/10 backdrop-blur-sm rounded-lg p-3 border border-white/20">
+                        <p class="text-sm text-purple-100">Pengguna</p>
+                        <p id="userName" class="text-lg font-semibold text-white">-</p>
+                        <p id="userRole" class="text-xs text-purple-200 mt-1">-</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <a href="logo-customizer.html" class="px-4 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition-all duration-200 transform hover:scale-105 whitespace-nowrap">
+                            🎨 Logo
+                        </a>
+                        <button id="logoutBtn" class="px-6 py-3 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg transition-all duration-200 transform hover:scale-105 whitespace-nowrap">
+                            🚪 Keluar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Input Section -->
+        <div class="bg-white/10 backdrop-blur-md rounded-xl shadow-xl p-6 mb-8 border border-white/20">
+            <h2 class="text-xl font-semibold text-white mb-6">✏️ Tambah/Edit Jurnal</h2>
+            <form id="jurnalForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-100 mb-2">Hari</label>
+                    <select id="hari" class="w-full p-3 border border-purple-300 rounded-lg bg-white/80 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all" required>
+                        <option value="">Pilih Hari</option>
+                        <option value="Senin">Senin</option>
+                        <option value="Selasa">Selasa</option>
+                        <option value="Rabu">Rabu</option>
+                        <option value="Kamis">Kamis</option>
+                        <option value="Jumat">Jumat</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-100 mb-2">Tanggal</label>
+                    <input type="date" id="tanggal" class="w-full p-3 border border-purple-300 rounded-lg bg-white/80 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all" required>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-100 mb-2">Jam Ke</label>
+                    <select id="jamKe" class="w-full p-3 border border-purple-300 rounded-lg bg-white/80 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all" required>
+                        <option value="">Pilih Jam</option>
+                        <option value="1">Jam ke-1</option>
+                        <option value="2">Jam ke-2</option>
+                        <option value="3">Jam ke-3</option>
+                        <option value="4">Jam ke-4</option>
+                        <option value="5">Jam ke-5</option>
+                        <option value="6">Jam ke-6</option>
+                        <option value="7">Jam ke-7</option>
+                        <option value="8">Jam ke-8</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-100 mb-2">Kelas</label>
+                    <select id="kelas" class="w-full p-3 border border-purple-300 rounded-lg bg-white/80 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all" required>
+                        <option value="">Pilih Kelas</option>
+                        <option value="8E">8E</option>
+                        <option value="8F">8F</option>
+                        <option value="8G">8G</option>
+                        <option value="8H">8H</option>
+                        <option value="9A">9A</option>
+                        <option value="9B">9B</option>
+                        <option value="9C">9C</option>
+                        <option value="9D">9D</option>
+                        <option value="9E">9E</option>
+                        <option value="9F">9F</option>
+                        <option value="9G">9G</option>
+                        <option value="9H">9H</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-100 mb-2">Jumlah Siswa Hadir</label>
+                    <input type="number" id="siswaHadir" min="0" max="40" class="w-full p-3 border border-purple-300 rounded-lg bg-white/80 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all" required>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-100 mb-2">Jumlah Siswa Tidak Hadir</label>
+                    <input type="number" id="siswaTidakHadir" min="0" max="40" class="w-full p-3 border border-purple-300 rounded-lg bg-white/80 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all" required>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-100 mb-2">Nama Siswa yang Tidak Hadir</label>
+                    <textarea id="namaSiswaTidakHadir" rows="3" placeholder="Masukkan nama siswa yang tidak hadir (pisahkan dengan koma)" class="w-full p-3 border border-purple-300 rounded-lg bg-white/80 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all"></textarea>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-100 mb-2">Uraian Materi</label>
+                    <textarea id="uraianMateri" rows="4" placeholder="Jelaskan materi yang diajarkan..." class="w-full p-3 border border-purple-300 rounded-lg bg-white/80 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all" required></textarea>
+                </div>
+
+                <div class="md:col-span-2 flex gap-4">
+                    <button type="submit" id="submitBtn" class="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-medium py-3 px-6 rounded-lg transition duration-200 transform hover:scale-105">
+                        💾 Simpan Jurnal
+                    </button>
+                    <button type="button" id="cancelBtn" class="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition duration-200" style="display: none;">
+                        ❌ Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Filter dan Search -->
+        <div class="bg-white/10 backdrop-blur-md rounded-xl shadow-xl p-6 mb-8 border border-white/20">
+            <h3 class="text-lg font-semibold text-white mb-4">🔍 Filter & Pencarian</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-100 mb-2">Filter Kelas</label>
+                    <select id="filterKelas" class="w-full p-3 border border-purple-300 rounded-lg bg-white/80 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all">
+                        <option value="">Semua Kelas</option>
+                        <option value="8E">8E</option>
+                        <option value="8F">8F</option>
+                        <option value="8G">8G</option>
+                        <option value="8H">8H</option>
+                        <option value="9A">9A</option>
+                        <option value="9B">9B</option>
+                        <option value="9C">9C</option>
+                        <option value="9D">9D</option>
+                        <option value="9E">9E</option>
+                        <option value="9F">9F</option>
+                        <option value="9G">9G</option>
+                        <option value="9H">9H</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-100 mb-2">Filter Bulan</label>
+                    <select id="filterBulan" class="w-full p-3 border border-purple-300 rounded-lg bg-white/80 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all">
+                        <option value="">Semua Bulan</option>
+                        <option value="01">Januari</option>
+                        <option value="02">Februari</option>
+                        <option value="03">Maret</option>
+                        <option value="04">April</option>
+                        <option value="05">Mei</option>
+                        <option value="06">Juni</option>
+                        <option value="07">Juli</option>
+                        <option value="08">Agustus</option>
+                        <option value="09">September</option>
+                        <option value="10">Oktober</option>
+                        <option value="11">November</option>
+                        <option value="12">Desember</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-100 mb-2">Cari Materi</label>
+                    <input type="text" id="searchMateri" placeholder="Cari berdasarkan materi..." class="w-full p-3 border border-purple-300 rounded-lg bg-white/80 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all">
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">📋 Daftar Jurnal Mengajar</h3>
+                <p class="text-sm text-gray-600 mt-1">Total: <span id="totalJurnal">0</span> jurnal</p>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hari/Tanggal</th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jam</th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kelas</th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kehadiran</th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Siswa Tidak Hadir</th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Materi</th>
+                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="jurnalTableBody" class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td colspan="8" class="px-6 py-12 text-center text-gray-500">
+                                <div class="text-4xl mb-4"></div>
+                                <p>Belum ada jurnal yang ditambahkan</p>
+                                <p class="text-sm mt-2">Mulai dengan menambahkan jurnal pertama Anda!</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="logo.js"></script>
+    <script src="auth.js"></script>
+    <script src="app.js" defer></script>
+    <script>
+        // Initialize logo on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderLogo('logoPreview');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Base styles */
+body { font-family: 'Inter', sans-serif; }
+
+/* Notification transitions (kept here for future extension) */
+.notification-enter { transform: translateX(100%); }
+.notification-show { transform: translateX(0); }
+
+/* Truncate helper (tailwind already has this but kept for clarity) */
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* A few layout helpers to keep html cleaner */
+.container { max-width: 1100px; margin-left: auto; margin-right: auto; }
+
+/* Styling for empty table state */
+.table-empty .text-4xl { opacity: 0.8; }
+
+/* Logo animations */
+@keyframes logoFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes logoPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
+    50% { box-shadow: 0 0 40px rgba(168, 85, 247, 0.8); }
+}
+
+#logoPreview {
+    animation: logoFloat 3s ease-in-out infinite;
+}
+
+#logoPreview div {
+    animation: logoPulse 2s ease-in-out infinite;
+}
+
+/* Smooth transitions for interactive elements */
+button { transition: all 0.2s ease; }
+select, input, textarea { transition: all 0.2s ease; }
+
+/* Animation delay for floating logo */
+@keyframes animationDelay2000 { }
+.animation-delay-2000 { animation-delay: 2s; }
+.animation-delay-4000 { animation-delay: 4s; }

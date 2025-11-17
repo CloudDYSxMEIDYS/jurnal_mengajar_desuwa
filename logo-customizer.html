@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customizer Logo - Sistem Jurnal Mengajar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl shadow-xl p-6 mb-8">
+            <h1 class="text-3xl font-bold text-white">🎨 Customizer Logo</h1>
+            <p class="text-purple-100 mt-2">Desain logo untuk aplikasi Anda</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left: Preview -->
+            <div class="lg:col-span-1">
+                <div class="bg-white/10 backdrop-blur-md rounded-xl shadow-xl p-6 border border-white/20 sticky top-8">
+                    <h2 class="text-lg font-semibold text-white mb-6">Preview Logo</h2>
+                    <div id="logoPreview" class="flex items-center justify-center bg-white/10 rounded-lg p-12 mb-6 border border-white/20 min-h-48">
+                        <!-- Logo will be rendered here -->
+                    </div>
+                    <div class="text-center">
+                        <button onclick="downloadLogo()" class="w-full px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition-all duration-200 mb-2">
+                            📥 Download Logo
+                        </button>
+                        <button onclick="resetLogo()" class="w-full px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg transition-all duration-200">
+                            🔄 Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Customization Options -->
+            <div class="lg:col-span-2">
+                <!-- Template Selection -->
+                <div class="bg-white/10 backdrop-blur-md rounded-xl shadow-xl p-6 border border-white/20 mb-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">1️⃣ Pilih Template</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3" id="templateList">
+                        <!-- Templates will be generated here -->
+                    </div>
+                </div>
+
+                <!-- Emoji Selection -->
+                <div class="bg-white/10 backdrop-blur-md rounded-xl shadow-xl p-6 border border-white/20 mb-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">2️⃣ Pilih Emoji</h3>
+                    <div class="grid grid-cols-4 gap-2" id="emojiList">
+                        <!-- Emojis will be generated here -->
+                    </div>
+                    <div class="mt-4">
+                        <label class="block text-sm font-medium text-gray-100 mb-2">atau masukkan emoji custom:</label>
+                        <input type="text" id="customEmoji" maxlength="2" placeholder="😊" class="w-full p-3 border border-purple-300 rounded-lg bg-white/80 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all" />
+                    </div>
+                </div>
+
+                <!-- Color Selection -->
+                <div class="bg-white/10 backdrop-blur-md rounded-xl shadow-xl p-6 border border-white/20 mb-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">3️⃣ Pilih Warna</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-100 mb-2">Warna Awal (From)</label>
+                            <div class="grid grid-cols-4 gap-2" id="colorFromList">
+                                <!-- Colors will be generated here -->
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-100 mb-2">Warna Akhir (To)</label>
+                            <div class="grid grid-cols-4 gap-2" id="colorToList">
+                                <!-- Colors will be generated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Size Selection -->
+                <div class="bg-white/10 backdrop-blur-md rounded-xl shadow-xl p-6 border border-white/20 mb-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">4️⃣ Ukuran Logo</h3>
+                    <div class="grid grid-cols-4 gap-2" id="sizeList">
+                        <!-- Sizes will be generated here -->
+                    </div>
+                </div>
+
+                <!-- Apply Button -->
+                <button onclick="applyLogo()" class="w-full px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold rounded-lg transition-all duration-200 transform hover:scale-105">
+                    ✅ Terapkan Logo
+                </button>
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="mt-8 text-center">
+            <a href="index.html" class="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg transition-all duration-200 inline-block">
+                ← Kembali ke Dashboard
+            </a>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="logo.js"></script>
+    <script>
+        // Available emojis for logo
+        const AVAILABLE_EMOJIS = ['📚', '🎓', '✨', '📖', '🌟', '📝', '🎯', '💡', '🔥', '🚀', '🎨', '📊'];
+        
+        // Available colors
+        const AVAILABLE_COLORS = [
+            'from-purple-400', 'from-pink-400', 'from-blue-500', 'from-green-500',
+            'from-yellow-400', 'from-orange-500', 'from-red-500', 'from-indigo-500'
+        ];
+
+        const SIZE_OPTIONS = [
+            { size: 'sm', label: 'Kecil' },
+            { size: 'base', label: 'Normal' },
+            { size: 'lg', label: 'Besar' },
+            { size: 'xl', label: 'Extra Besar' }
+        ];
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            renderLogoPreview();
+            renderTemplates();
+            renderEmojis();
+            renderColors();
+            renderSizes();
+            setupEventListeners();
+        });
+
+        function renderLogoPreview() {
+            renderLogo('logoPreview');
+        }
+
+        function renderTemplates() {
+            const container = document.getElementById('templateList');
+            const templates = logoCustomizer.getAllTemplates();
+            const current = logoCustomizer.getLogoConfig();
+
+            container.innerHTML = Object.keys(templates).map(key => {
+                const template = templates[key];
+                const isActive = current.template === key;
+                return `
+                    <button 
+                        onclick="selectTemplate('${key}')"
+                        class="p-3 rounded-lg transition-all duration-200 ${
+                            isActive 
+                                ? 'bg-pink-500 border-2 border-pink-300' 
+                                : 'bg-white/10 border border-white/20 hover:bg-white/20'
+                        }"
+                    >
+                        <div class="text-white text-center">
+                            <div class="text-2xl mb-1">${template.emoji}</div>
+                            <div class="text-xs font-medium">${template.name}</div>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function renderEmojis() {
+            const container = document.getElementById('emojiList');
+            container.innerHTML = AVAILABLE_EMOJIS.map(emoji => `
+                <button 
+                    onclick="selectEmoji('${emoji}')"
+                    class="p-3 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-200 text-2xl"
+                >
+                    ${emoji}
+                </button>
+            `).join('');
+        }
+
+        function renderColors() {
+            const current = logoCustomizer.getLogoConfig();
+            
+            // From colors
+            const fromContainer = document.getElementById('colorFromList');
+            fromContainer.innerHTML = AVAILABLE_COLORS.map(color => `
+                <button 
+                    onclick="selectColorFrom('${color}')"
+                    class="p-3 rounded-lg border-2 transition-all duration-200 h-12 w-12 ${
+                        current.colors[0] === color 
+                            ? 'border-white bg-white/30' 
+                            : 'border-white/20 bg-white/10 hover:bg-white/20'
+                    } ${color}"
+                >
+                </button>
+            `).join('');
+
+            // To colors
+            const toContainer = document.getElementById('colorToList');
+            toContainer.innerHTML = AVAILABLE_COLORS.map(color => `
+                <button 
+                    onclick="selectColorTo('${color}')"
+                    class="p-3 rounded-lg border-2 transition-all duration-200 h-12 w-12 ${
+                        current.colors[1] === color 
+                            ? 'border-white bg-white/30' 
+                            : 'border-white/20 bg-white/10 hover:bg-white/20'
+                    } ${color}"
+                >
+                </button>
+            `).join('');
+        }
+
+        function renderSizes() {
+            const container = document.getElementById('sizeList');
+            const current = logoCustomizer.getLogoConfig();
+
+            container.innerHTML = SIZE_OPTIONS.map(opt => `
+                <button 
+                    onclick="selectSize('${opt.size}')"
+                    class="p-3 rounded-lg transition-all duration-200 ${
+                        current.size === opt.size 
+                            ? 'bg-pink-500 border-2 border-pink-300' 
+                            : 'bg-white/10 border border-white/20 hover:bg-white/20'
+                    }"
+                >
+                    <div class="text-white text-center">
+                        <div class="text-xs font-medium">${opt.label}</div>
+                    </div>
+                </button>
+            `).join('');
+        }
+
+        function setupEventListeners() {
+            const customEmojiInput = document.getElementById('customEmoji');
+            if (customEmojiInput) {
+                customEmojiInput.addEventListener('change', () => {
+                    const emoji = customEmojiInput.value.trim();
+                    if (emoji) {
+                        logoCustomizer.setEmoji(emoji);
+                        renderLogoPreview();
+                    }
+                });
+            }
+        }
+
+        function selectTemplate(template) {
+            logoCustomizer.setTemplate(template);
+            renderLogoPreview();
+            renderTemplates();
+            renderColors();
+        }
+
+        function selectEmoji(emoji) {
+            logoCustomizer.setEmoji(emoji);
+            renderLogoPreview();
+        }
+
+        function selectColorFrom(color) {
+            const current = logoCustomizer.getLogoConfig();
+            logoCustomizer.setColors(color, current.colors[1]);
+            renderLogoPreview();
+            renderColors();
+        }
+
+        function selectColorTo(color) {
+            const current = logoCustomizer.getLogoConfig();
+            logoCustomizer.setColors(current.colors[0], color);
+            renderLogoPreview();
+            renderColors();
+        }
+
+        function selectSize(size) {
+            logoCustomizer.setSize(size);
+            renderLogoPreview();
+            renderSizes();
+        }
+
+        function applyLogo() {
+            renderLogoPreview();
+            // Update logos in index.html and login.html
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg bg-green-500 text-white';
+            notification.textContent = '✅ Logo berhasil diterapkan!';
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function resetLogo() {
+            if (confirm('Reset logo ke template default?')) {
+                localStorage.removeItem('appLogo');
+                location.reload();
+            }
+        }
+
+        function downloadLogo() {
+            alert('💾 Fitur download tersedia untuk versi premium. Logo sudah disimpan di browser Anda.');
+        }
+    </script>
+</body>
+</html>

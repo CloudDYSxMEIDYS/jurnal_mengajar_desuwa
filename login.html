@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sistem Jurnal Mengajar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gradient-to-br from-purple-600 via-pink-500 to-red-500 min-h-screen flex items-center justify-center">
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-20 left-10 w-72 h-72 bg-white rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+        <div class="absolute top-40 right-10 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-2000"></div>
+        <div class="absolute bottom-20 left-1/2 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-4000"></div>
+    </div>
+
+    <div class="relative z-10 w-full max-w-md">
+        <!-- Login Card -->
+        <div class="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-8 border border-white/20">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <div id="logoPreview" class="flex items-center justify-center mb-4"></div>
+                <h1 class="text-3xl font-bold text-white mb-2">Jurnal Mengajar</h1>
+                <p class="text-gray-200">Masuk ke sistem Anda</p>
+            </div>
+
+            <!-- Form -->
+            <form id="loginForm" class="space-y-6">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-100 mb-2">Nama Pengguna</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-all duration-200" 
+                        placeholder="Masukkan nama pengguna"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-100 mb-2">Kata Sandi</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-all duration-200" 
+                        placeholder="Masukkan kata sandi"
+                        required
+                    >
+                </div>
+
+                <!-- Remember Me & Forgot Password -->
+                <div class="flex items-center justify-between text-sm">
+                    <label class="flex items-center text-gray-200 cursor-pointer">
+                        <input type="checkbox" id="rememberMe" name="rememberMe" class="w-4 h-4 rounded bg-white/10 border border-white/20 text-pink-500 focus:ring-pink-400 cursor-pointer">
+                        <span class="ml-2">Ingat saya</span>
+                    </label>
+                    <a href="#" class="text-pink-300 hover:text-pink-200 transition-colors">Lupa kata sandi?</a>
+                </div>
+
+                <!-- Error Message -->
+                <div id="errorMessage" class="hidden p-4 rounded-lg bg-red-500/20 border border-red-500/50 text-red-200 text-sm"></div>
+
+                <!-- Submit Button -->
+                <button 
+                    type="submit" 
+                    class="w-full py-3 px-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold rounded-lg transition-all duration-200 transform hover:scale-105 hover:shadow-lg active:scale-95 flex items-center justify-center gap-2"
+                >
+                    <span>🔐</span>
+                    <span>Masuk</span>
+                </button>
+            </form>
+
+            <!-- Footer -->
+            <div class="mt-6 text-center">
+                <p class="text-gray-300 text-sm">
+                    Belum punya akun? 
+                    <a href="#" class="text-pink-300 hover:text-pink-200 font-semibold transition-colors">Hubungi Administrator</a>
+                </p>
+                <p class="text-gray-400 text-xs mt-3">
+                    <a href="logo-customizer.html" class="text-pink-300 hover:text-pink-200 transition-colors">🎨 Customizer Logo</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Demo Info -->
+        <div class="mt-6 bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10 text-center text-sm text-gray-200">
+            <p class="font-medium mb-3">Demo Credentials:</p>
+            <div class="space-y-2 text-left text-xs">
+                <p><span class="text-blue-300 font-semibold">👨‍💼 Admin</span><br/>Username: <span class="text-pink-300">admin</span> | Password: <span class="text-pink-300">admin123</span></p>
+                <p><span class="text-green-300 font-semibold">👨‍🏫 Guru (Riyan)</span><br/>Username: <span class="text-pink-300">riyan</span> | Password: <span class="text-pink-300">guru123</span></p>
+                <p><span class="text-purple-300 font-semibold">👩‍🏫 Guru (Siti)</span><br/>Username: <span class="text-pink-300">siti</span> | Password: <span class="text-pink-300">guru456</span></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="logo.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        // Initialize logo on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderLogo('logoPreview');
+        });
+    </script>
+</body>
+</html>
