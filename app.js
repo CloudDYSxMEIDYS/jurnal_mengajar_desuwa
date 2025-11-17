@@ -1,4 +1,4 @@
-// App logic extracted from index.html and organized in a single file
+
 
 let jurnalData = JSON.parse(localStorage.getItem('jurnalData')) || [];
 let editingId = null;
@@ -123,7 +123,7 @@ function renderTable() {
     if (filterBulan.value) filteredData = filteredData.filter(j => j.tanggal.substring(5, 7) === filterBulan.value);
     if (searchMateri.value) filteredData = filteredData.filter(j => j.uraianMateri.toLowerCase().includes(searchMateri.value.toLowerCase()));
 
-    // Sort newest first
+    
     filteredData.sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
 
     totalJurnal.textContent = filteredData.length;
@@ -135,7 +135,7 @@ function renderTable() {
 
     tableBody.innerHTML = filteredData.map((jurnal, index) => `\n        <tr class="hover:bg-gray-50 transition-colors duration-200">\n            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${index + 1}</td>\n            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">\n                <div class="font-medium">${jurnal.hari}</div>\n                <div class="text-gray-500">${formatDate(jurnal.tanggal)}</div>\n            </td>\n            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">\n                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">\n                    Jam ke-${jurnal.jamKe}\n                </span>\n            </td>\n            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">\n                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">\n                    ${jurnal.kelas}\n                </span>\n            </td>\n            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">\n                <div class="text-green-600 font-medium">✅ ${jurnal.siswaHadir} hadir</div>\n                <div class="text-red-600">❌ ${jurnal.siswaTidakHadir} tidak hadir</div>\n            </td>\n            <td class="px-6 py-4 text-sm text-gray-900 max-w-xs">\n                <div class="truncate" title="${jurnal.namaSiswaTidakHadir}">\n                    ${jurnal.namaSiswaTidakHadir || '-'}\n                </div>\n            </td>\n            <td class="px-6 py-4 text-sm text-gray-900 max-w-xs">\n                <div class="truncate" title="${jurnal.uraianMateri}">\n                    ${jurnal.uraianMateri}\n                </div>\n            </td>\n            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">\n                <button data-id="${jurnal.id}" class="edit-btn text-indigo-600 hover:text-indigo-900 mr-3 transition-colors duration-200">✏️ Edit</button>\n                <button data-id="${jurnal.id}" class="delete-btn text-red-600 hover:text-red-900 transition-colors duration-200">🗑️ Hapus</button>\n            </td>\n        </tr>\n    `).join('');
 
-    // Rebind events for new buttons
+    
     document.querySelectorAll('.edit-btn').forEach(btn => btn.addEventListener('click', e => editJurnal(Number(e.currentTarget.dataset.id))));
     document.querySelectorAll('.delete-btn').forEach(btn => btn.addEventListener('click', e => deleteJurnal(Number(e.currentTarget.dataset.id))));
 }
@@ -169,8 +169,20 @@ function showNotification(message, type = 'info') {
     }, 3000);
 }
 
-// Expose functions used by inline handlers if any
+
+
 window.editJurnal = editJurnal;
 window.deleteJurnal = deleteJurnal;
 window.showNotification = showNotification;
+
+// Local Storage Initialization/Reset
+function initLocalStorage() {
+    // Set default jurnalData (empty array)
+    localStorage.setItem('jurnalData', JSON.stringify([]));
+    // Optionally clear user session (uncomment if needed)
+    // localStorage.removeItem('userSession');
+    showNotification('Local storage initialized!', 'success');
+    renderTable();
+}
+window.initLocalStorage = initLocalStorage;
 

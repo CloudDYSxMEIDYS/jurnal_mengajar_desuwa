@@ -1,6 +1,4 @@
-// Authentication Management
 
-// Demo users with roles (in production, this would be server-side)
 const DEMO_USERS = {
     'admin': {
         password: 'admin123',
@@ -25,7 +23,7 @@ const DEMO_USERS = {
 const LOGIN_KEY = 'userSession';
 const REMEMBER_KEY = 'rememberUser';
 
-// Check if user is logged in on page load
+
 document.addEventListener('DOMContentLoaded', () => {
     const currentPage = window.location.pathname;
     const isLoginPage = currentPage.includes('login.html') || currentPage === '/';
@@ -33,25 +31,25 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const userSession = localStorage.getItem(LOGIN_KEY);
     
-    // If on auth-required page and not logged in, redirect to login
+    
     if (isAuthPage && !userSession) {
         window.location.href = 'login.html';
         return;
     }
     
-    // If on login page and already logged in, redirect to main page
+    
     if (isLoginPage && userSession) {
         window.location.href = 'index.html';
         return;
     }
     
-    // Setup login form if on login page
+    
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
         setupLoginForm();
     }
     
-    // Setup logout button if on main page
+    
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', logout);
@@ -63,7 +61,7 @@ function setupLoginForm() {
     const errorMessage = document.getElementById('errorMessage');
     const rememberMe = document.getElementById('rememberMe');
     
-    // Check for remembered user
+    
     const rememberedUser = localStorage.getItem(REMEMBER_KEY);
     if (rememberedUser) {
         document.getElementById('username').value = rememberedUser;
@@ -76,15 +74,15 @@ function setupLoginForm() {
         const username = document.getElementById('username').value.trim();
         const password = document.getElementById('password').value;
         
-        // Validate inputs
+        
         if (!username || !password) {
             showError('Nama pengguna dan kata sandi harus diisi');
             return;
         }
         
-        // Check credentials
+        
         if (DEMO_USERS[username] && DEMO_USERS[username].password === password) {
-            // Login successful
+            
             const user = DEMO_USERS[username];
             const sessionData = {
                 username: username,
@@ -96,20 +94,20 @@ function setupLoginForm() {
             
             localStorage.setItem(LOGIN_KEY, JSON.stringify(sessionData));
             
-            // Remember user if checkbox is checked
+            
             if (rememberMe.checked) {
                 localStorage.setItem(REMEMBER_KEY, username);
             } else {
                 localStorage.removeItem(REMEMBER_KEY);
             }
             
-            // Redirect to main page
+            
             showSuccess('Login berhasil! Mengalihkan...');
             setTimeout(() => {
                 window.location.href = 'index.html';
             }, 500);
         } else {
-            // Login failed
+            
             showError('Nama pengguna atau kata sandi salah');
             document.getElementById('password').value = '';
         }
@@ -144,5 +142,5 @@ function logout() {
     }
 }
 
-// Expose logout function globally
+
 window.logout = logout;
