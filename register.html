@@ -18,17 +18,17 @@
         <div class="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-8 border border-white/20">
             <!-- Header -->
             <div class="text-center mb-8">
-                <h1 class="text-3xl font-bold text-white mb-2">📝 Daftar Akun — Bergabunglah, pahlawan papan tulis!</h1>
+                <h1 class="text-3xl font-bold text-white mb-2"> Daftar Akun — Bergabunglah, pahlawan papan tulis!</h1>
                 <p class="text-gray-200">Buat akun untuk Siswa atau Guru (bawa semangat)</p>
             </div>
 
             <!-- Tab Navigation -->
             <div class="flex gap-4 mb-8 border-b border-white/20">
                 <button id="studentTab" onclick="switchTab('student')" class="flex-1 py-3 px-4 text-center font-semibold text-white border-b-2 border-pink-500 transition-all">
-                    👨‍🎓 Daftar Siswa — ayo!
+                    Daftar Siswa — ayo!
                 </button>
                 <button id="teacherTab" onclick="switchTab('teacher')" class="flex-1 py-3 px-4 text-center font-semibold text-gray-300 border-b-2 border-transparent hover:text-white transition-all">
-                    👨‍🏫 Daftar Guru — hormat!
+                    Daftar Guru — hormat!
                 </button>
             </div>
 
@@ -130,10 +130,10 @@
                     <label class="block text-sm font-medium text-gray-100 mb-2">Password *</label>
                     <input type="password" id="teacherPassword" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:ring-2 focus:ring-pink-400" placeholder="Kombinasi huruf, angka, & simbol" required>
                     <div id="teacherPasswordRequirements" class="mt-2 space-y-1 text-xs hidden">
-                        <div id="reqTeacherUpper" class="text-gray-300">❌ Huruf besar (A-Z)</div>
-                        <div id="reqTeacherLower" class="text-gray-300">❌ Huruf kecil (a-z)</div>
-                        <div id="reqTeacherNumber" class="text-gray-300">❌ Angka (0-9)</div>
-                        <div id="reqTeacherSpecial" class="text-gray-300">❌ Simbol (!@#$%^&* dll)</div>
+                        <div id="reqTeacherUpper" class="text-gray-300">Belum Huruf besar (A-Z)</div>
+                        <div id="reqTeacherLower" class="text-gray-300">Belum Huruf kecil (a-z)</div>
+                        <div id="reqTeacherNumber" class="text-gray-300">Belum Angka (0-9)</div>
+                        <div id="reqTeacherSpecial" class="text-gray-300">Belum Simbol (!@#$%^&* dll)</div>
                     </div>
                 </div>
                 </div>
@@ -159,6 +159,7 @@
 
     <script src="register.js"></script>
     <script>
+        // Toggle between student and teacher registration forms
         function switchTab(tab) {
             const studentForm = document.getElementById('studentForm');
             const teacherForm = document.getElementById('teacherForm');
@@ -182,7 +183,7 @@
             }
         }
 
-        // Student registration handler
+        // When a student submits the registration form
         document.getElementById('studentForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const errorDiv = document.getElementById('studentError');
@@ -209,15 +210,15 @@
                     kelasMengajar: kelas
                 });
 
-                alert('✅ Pendaftaran sukses! Silakan masuk dan mulai menulis jurnal.');
+                alert('Pendaftaran sukses! Silakan masuk dan mulai menulis jurnal.');
                 window.location.href = 'login.html';
             } catch (err) {
-                errorDiv.textContent = '❌ ' + err.message;
+                errorDiv.textContent = 'Gagal: ' + err.message;
                 errorDiv.classList.remove('hidden');
             }
         });
 
-        // Teacher password strength monitor
+        // Watch the teacher's password as they type and show which requirements are met
         document.getElementById('teacherPassword').addEventListener('input', (e) => {
             const password = e.target.value;
             const reqDiv = document.getElementById('teacherPasswordRequirements');
@@ -240,7 +241,7 @@
             updateRequirementUI('reqTeacherSpecial', hasSpecial);
         });
 
-        // Teacher registration handler
+        // When a teacher submits the registration form
         document.getElementById('teacherForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const errorDiv = document.getElementById('teacherError');
@@ -274,25 +275,25 @@
                     mapelMengajar: mapel
                 });
 
-                alert('✅ Pendaftaran sukses! Silakan masuk dan mulai menulis jurnal.');
+                alert('Pendaftaran sukses! Silakan masuk dan mulai menulis jurnal.');
                 window.location.href = 'login.html';
             } catch (err) {
-                errorDiv.textContent = '❌ ' + err.message;
+                errorDiv.textContent = 'Gagal: ' + err.message;
                 errorDiv.classList.remove('hidden');
             }
         });
 
-        // Helper function to update requirement UI
+        // Update the password requirement indicator: show green if met, gray if not
         function updateRequirementUI(elementId, isMet) {
             const elem = document.getElementById(elementId);
             if (isMet) {
                 elem.classList.remove('text-gray-300');
                 elem.classList.add('text-green-300');
-                elem.textContent = elem.textContent.replace('❌', '✅');
+                elem.textContent = elem.textContent.replace(/^Belum/, 'Terpenuhi');
             } else {
                 elem.classList.add('text-gray-300');
                 elem.classList.remove('text-green-300');
-                elem.textContent = elem.textContent.replace('✅', '❌');
+                elem.textContent = elem.textContent.replace(/^Terpenuhi/, 'Belum');
             }
         }
     </script>

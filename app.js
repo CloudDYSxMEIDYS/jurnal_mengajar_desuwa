@@ -63,7 +63,7 @@ function loadUserInfo() {
         
         // Display user's role with icon
         if (userRole) {
-            const roleDisplay = currentUser.role === 'admin' ? '👨‍💼 Admin' : '👨‍🏫 Guru';
+            const roleDisplay = currentUser.role === 'admin' ? 'Admin' : 'Guru';
             userRole.textContent = roleDisplay;
         }
         
@@ -93,8 +93,8 @@ function setupEventListeners() {
 function handleSubmit(e) {
     e.preventDefault();
 
-    // Collect form data from all input fields
-    const formData = {
+    // Collect form data from all input fields — this is our journal entry
+        const formData = {
         id: editingId || Date.now(),                  // Use existing ID if editing, else create new
         hari: document.getElementById('hari').value,
         tanggal: document.getElementById('tanggal').value,
@@ -128,6 +128,7 @@ function handleSubmit(e) {
  * @param {number} id - The journal ID to edit
  */
 function editJurnal(id) {
+    // Find the journal by ID and load it into the form so the user can edit it
     const jurnal = jurnalData.find(j => j.id === id);
     if (!jurnal) return;
 
@@ -145,7 +146,7 @@ function editJurnal(id) {
     document.getElementById('uraianMateri').value = jurnal.uraianMateri;
 
     // Update button text to reflect editing mode
-    submitBtn.innerHTML = '✏️ Update Jurnal';
+    submitBtn.innerHTML = 'Update Jurnal';
     cancelBtn.style.display = 'block';
     
     // Scroll to form so user can see what they're editing
@@ -157,6 +158,7 @@ function editJurnal(id) {
  * @param {number} id - The journal ID to delete
  */
 function deleteJurnal(id) {
+    // Ask the user for confirmation before permanently deleting the journal
     if (!confirm('Apakah Anda yakin ingin menghapus jurnal ini?')) return;
     
     // Remove the journal from array
@@ -172,6 +174,7 @@ function deleteJurnal(id) {
  * Cancel editing and reset form to empty state
  */
 function cancelEdit() {
+    // User clicked Cancel — forget about editing and go back to blank form
     resetForm();
 }
 
@@ -181,7 +184,7 @@ function cancelEdit() {
 function resetForm() {
     form.reset();
     editingId = null;
-    submitBtn.innerHTML = '💾 Simpan Jurnal';
+    submitBtn.innerHTML = 'Simpan Jurnal';
     cancelBtn.style.display = 'none';
 }
 
@@ -221,7 +224,7 @@ function renderTable() {
         tableBody.innerHTML = `
             <tr>
                 <td colspan="8" class="px-6 py-12 text-center text-gray-500">
-                    <div class="text-4xl mb-4">🔍</div>
+                    <div class="text-4xl mb-4"></div>
                     <p>Tidak ada jurnal yang ditemukan</p>
                     <p class="text-sm mt-2">Coba ubah filter atau tambahkan jurnal baru</p>
                 </td>
@@ -249,8 +252,8 @@ function renderTable() {
                 </span>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                <div class="text-green-600 font-medium">✅ ${jurnal.siswaHadir} hadir</div>
-                <div class="text-red-600">❌ ${jurnal.siswaTidakHadir} tidak hadir</div>
+                <div class="text-green-600 font-medium">${jurnal.siswaHadir} hadir</div>
+                <div class="text-red-600">${jurnal.siswaTidakHadir} tidak hadir</div>
             </td>
             <td class="px-6 py-4 text-sm text-gray-900 max-w-xs">
                 <div class="truncate" title="${jurnal.namaSiswaTidakHadir}">
@@ -263,8 +266,8 @@ function renderTable() {
                 </div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button data-id="${jurnal.id}" class="edit-btn text-indigo-600 hover:text-indigo-900 mr-3 transition-colors duration-200">✏️ Edit</button>
-                <button data-id="${jurnal.id}" class="delete-btn text-red-600 hover:text-red-900 transition-colors duration-200">🗑️ Hapus</button>
+                <button data-id="${jurnal.id}" class="edit-btn text-indigo-600 hover:text-indigo-900 mr-3 transition-colors duration-200">Edit</button>
+                <button data-id="${jurnal.id}" class="delete-btn text-red-600 hover:text-red-900 transition-colors duration-200">Hapus</button>
             </td>
         </tr>
     `).join('');
@@ -350,7 +353,7 @@ function initLocalStorage() {
     // Optionally clear user session (uncomment if you want auto-logout)
     // localStorage.removeItem('userSession');
     
-    showNotification('✅ Local storage initialized - journals reset!', 'success');
+    showNotification('Local storage diinisialisasi - jurnal direset!', 'success');
     renderTable();
 }
 window.initLocalStorage = initLocalStorage;

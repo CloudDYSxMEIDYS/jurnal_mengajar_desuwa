@@ -132,48 +132,55 @@ const REGISTERED_USERS_KEY = 'registeredUsers';
 // Auth codes storage (created/managed by admin)
 const AUTH_CODES_KEY = 'authCodes';
 
+// Grab the list of auth codes from browser storage
 function getAuthCodes() {
   const raw = localStorage.getItem(AUTH_CODES_KEY);
   return raw ? JSON.parse(raw) : [];
 }
 
+// Save auth codes back to browser storage (so they survive page refreshes)
 function saveAuthCodes(codes) {
   localStorage.setItem(AUTH_CODES_KEY, JSON.stringify(codes));
 }
 
+// Admin creates a brand new auth code for a teacher to use
 function createAuthCode(code, createdBy = 'admin') {
   const codes = getAuthCodes();
+  // Prevent duplicate codes — each code should be unique and precious
   if (codes.find(c => c.code === code)) {
     throw new Error('Kode autentikasi sudah ada');
   }
+  // Create a new code entry with metadata
   const entry = {
     code: code.trim(),
-    used: false,
-    createdBy,
-    createdAt: new Date().toISOString(),
-    usedBy: null,
-    usedAt: null
+    used: false,                                   // Not claimed yet
+    createdBy,                                     // Who created it
+    createdAt: new Date().toISOString(),           // When it was born
+    usedBy: null,                                  // Will be filled when a teacher registers
+    usedAt: null                                   // Will be filled when claimed
   };
   codes.push(entry);
   saveAuthCodes(codes);
   return entry;
 }
 
+// When a teacher successfully registers with a code, mark it as used so no one else can use it
 function markAuthCodeUsed(code, userId) {
   const codes = getAuthCodes();
   const entry = codes.find(c => c.code === code);
   if (!entry) throw new Error('Kode autentikasi tidak ditemukan');
-  entry.used = true;
-  entry.usedBy = userId;
-  entry.usedAt = new Date().toISOString();
+  entry.used = true;                              // Code is now claimed
+  entry.usedBy = userId;                          // Record who used it
+  entry.usedAt = new Date().toISOString();        // Record when they used it
   saveAuthCodes(codes);
   return entry;
 }
 
+// Check if an auth code exists and hasn't been used yet — basically, is it good to go?
 function isAuthCodeValid(code) {
   const codes = getAuthCodes();
   const entry = codes.find(c => c.code === code);
-  return !!entry && !entry.used;
+  return !!entry && !entry.used;                  // True if code exists AND hasn't been claimed
 }
 
 
@@ -263,11 +270,13 @@ async function registerUser(userData) {
   return newUser.id;
 }
 
+// Fetch the list of people who registered through the app
 function getRegisteredUsers() {
   const users = localStorage.getItem(REGISTERED_USERS_KEY);
   return users ? JSON.parse(users) : [];
 }
 
+// Try to log in a user: hash their password and compare it with the stored hash
 async function authenticateUser(username, password) {
   const users = getRegisteredUsers();
   const user = users.find(u => u.username === username);
@@ -291,6 +300,7 @@ async function authenticateUser(username, password) {
   };
 }
 
+// Look up a user by their ID and return their info (minus the password hash for safety)
 function getUserById(userId) {
   const users = getRegisteredUsers();
   const user = users.find(u => u.id === userId);
@@ -301,6 +311,7 @@ function getUserById(userId) {
 }
 
 // Merge registered users with demo users
+// Combine registered users with demo accounts (demo accounts are for quick testing during development)
 function getAllAvailableUsers() {
   const registeredUsers = getRegisteredUsers();
   const demoUsers = {

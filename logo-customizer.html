@@ -50,8 +50,8 @@
                         
                     </div>
                     <div class="mt-4">
-                        <label class="block text-sm font-medium text-gray-100 mb-2">atau masukkan emoji custom:</label>
-                        <input type="text" id="customEmoji" maxlength="2" placeholder="😊" class="w-full p-3 border border-purple-300 rounded-lg bg-white/80 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all" />
+                        <label class="block text-sm font-medium text-gray-100 mb-2">atau masukkan ikon custom (opsional):</label>
+                        <input type="text" id="customEmoji" maxlength="2" placeholder="" class="w-full p-3 border border-purple-300 rounded-lg bg-white/80 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all" />
                     </div>
                 </div>
 
@@ -83,7 +83,7 @@
 
                 
                 <button onclick="applyLogo()" class="w-full px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold rounded-lg transition-all duration-200 transform hover:scale-105">
-                    ✅ Terapkan Logo
+                    Terapkan Logo
                 </button>
             </div>
         </div>
@@ -114,7 +114,7 @@
             { size: 'xl', label: 'Extra Besar' }
         ];
 
-        
+        // When the page loads, render all the customizer panels and set up interactions
         document.addEventListener('DOMContentLoaded', () => {
             renderLogoPreview();
             renderTemplates();
@@ -124,10 +124,12 @@
             setupEventListeners();
         });
 
+        // Show the current logo in the preview box
         function renderLogoPreview() {
             renderLogo('logoPreview');
         }
 
+        // Render the available logo templates as clickable buttons
         function renderTemplates() {
             const container = document.getElementById('templateList');
             const templates = logoCustomizer.getAllTemplates();
@@ -154,6 +156,7 @@
             }).join('');
         }
 
+        // Render the available emojis as clickable buttons
         function renderEmojis() {
             const container = document.getElementById('emojiList');
             container.innerHTML = AVAILABLE_EMOJIS.map(emoji => `
@@ -166,6 +169,7 @@
             `).join('');
         }
 
+        // Render color picker buttons for gradient start and end colors
         function renderColors() {
             const current = logoCustomizer.getLogoConfig();
             
@@ -198,6 +202,7 @@
             `).join('');
         }
 
+        // Render size options (small, normal, large, extra large)
         function renderSizes() {
             const container = document.getElementById('sizeList');
             const current = logoCustomizer.getLogoConfig();
@@ -218,6 +223,7 @@
             `).join('');
         }
 
+        // Set up interactions (e.g., listening to the custom emoji input)
         function setupEventListeners() {
             const customEmojiInput = document.getElementById('customEmoji');
             if (customEmojiInput) {
@@ -231,6 +237,7 @@
             }
         }
 
+        // User clicked a template button — apply it and re-render
         function selectTemplate(template) {
             logoCustomizer.setTemplate(template);
             renderLogoPreview();
@@ -238,11 +245,13 @@
             renderColors();
         }
 
+        // User selected an emoji — apply it and refresh preview
         function selectEmoji(emoji) {
             logoCustomizer.setEmoji(emoji);
             renderLogoPreview();
         }
 
+        // User selected the starting color of the gradient
         function selectColorFrom(color) {
             const current = logoCustomizer.getLogoConfig();
             logoCustomizer.setColors(color, current.colors[1]);
@@ -250,6 +259,7 @@
             renderColors();
         }
 
+        // User selected the ending color of the gradient
         function selectColorTo(color) {
             const current = logoCustomizer.getLogoConfig();
             logoCustomizer.setColors(current.colors[0], color);
@@ -257,18 +267,20 @@
             renderColors();
         }
 
+        // User selected a size option
         function selectSize(size) {
             logoCustomizer.setSize(size);
             renderLogoPreview();
             renderSizes();
         }
 
+        // Save and apply the current logo configuration
         function applyLogo() {
             renderLogoPreview();
             
             const notification = document.createElement('div');
             notification.className = 'fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg bg-green-500 text-white';
-            notification.textContent = '✅ Logo berhasil diterapkan!';
+            notification.textContent = 'Logo berhasil diterapkan!';
             document.body.appendChild(notification);
             
             setTimeout(() => {
@@ -276,6 +288,7 @@
             }, 3000);
         }
 
+        // Reset the logo back to the default template
         function resetLogo() {
             if (confirm('Reset logo ke template default?')) {
                 localStorage.removeItem('appLogo');
@@ -283,6 +296,7 @@
             }
         }
 
+        // Placeholder for download functionality
         function downloadLogo() {
             alert(' Fitur download tersedia untuk versi premium. Logo sudah disimpan di browser Anda.');
         }

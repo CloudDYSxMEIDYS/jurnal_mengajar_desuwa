@@ -18,35 +18,35 @@ const LOGO_STORAGE_KEY = 'appLogo';
 const LOGO_TEMPLATES = {
     modern: {
         name: 'Modern',
-        emoji: '📚',
+        emoji: '',
         colors: ['from-purple-400', 'to-pink-400'],
         bgClass: 'bg-gradient-to-br',
         description: 'Modern gradient logo with book emoji'
     },
     academic: {
         name: 'Academic',
-        emoji: '🎓',
+        emoji: '',
         colors: ['from-blue-500', 'to-blue-700'],
         bgClass: 'bg-gradient-to-br',
         description: 'Academic style with graduation cap'
     },
     creative: {
         name: 'Creative',
-        emoji: '✨',
+        emoji: '',
         colors: ['from-yellow-400', 'to-orange-500'],
         bgClass: 'bg-gradient-to-br',
         description: 'Creative design with sparkle'
     },
     professional: {
         name: 'Professional',
-        emoji: '📖',
+        emoji: '',
         colors: ['from-gray-700', 'to-gray-900'],
         bgClass: 'bg-gradient-to-br',
         description: 'Professional journal style'
     },
     vibrant: {
         name: 'Vibrant',
-        emoji: '🌟',
+        emoji: '',
         colors: ['from-red-500', 'to-yellow-500'],
         bgClass: 'bg-gradient-to-br',
         description: 'Vibrant and energetic design'

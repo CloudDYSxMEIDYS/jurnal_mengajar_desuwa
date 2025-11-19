@@ -178,7 +178,7 @@ function setupLoginForm() {
 function showError(message) {
     const errorDiv = document.getElementById('errorMessage');
     if (errorDiv) {
-        errorDiv.textContent = '⚠️ ' + message;
+        errorDiv.textContent = message;
         errorDiv.classList.remove('hidden');
         // Auto-hide after a moment of drama
         setTimeout(() => {
@@ -194,7 +194,7 @@ function showError(message) {
 function showSuccess(message) {
     const errorDiv = document.getElementById('errorMessage');
     if (errorDiv) {
-        errorDiv.textContent = '✅ ' + message;
+        errorDiv.textContent = message;
         errorDiv.classList.remove('hidden', 'bg-red-500/20', 'border-red-500/50', 'text-red-200');
         errorDiv.classList.add('bg-green-500/20', 'border-green-500/50', 'text-green-200');
     }
