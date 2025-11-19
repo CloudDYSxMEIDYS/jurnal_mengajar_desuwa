@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin — Kelola Kode Autentikasi</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      body { font-family: Arial, Helvetica, sans-serif; padding: 24px; background: #f3f4f6; }
+      .card { background: white; padding: 16px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 12px; }
+      .row { display:flex; gap:8px; }
+      input[type=text] { flex:1; padding:8px; }
+      button { padding:8px 12px; }
+      table { width:100%; border-collapse:collapse; }
+      th,td { padding:8px; border-bottom:1px solid #eee; text-align:left; }
+      .used { color: #9ca3af; }
+    </style>
+  </head>
+  <body>
+    <h1>Kelola Kode Autentikasi Guru — Kotak Ajaib Admin</h1>
+
+    <div class="card">
+      <form id="createForm">
+        <div class="row">
+          <input id="newCode" type="text" placeholder="Masukkan kode baru (contoh: SEKOLAH-2025-01)" required />
+          <button type="submit">Cipta Kode Ajaib</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Daftar Kode (Siapa yang beruntung?)</h2>
+      <table id="codesTable">
+        <thead>
+          <tr><th>Kode</th><th>Digunakan</th><th>Dibuat Oleh</th><th>Aksi</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <script src="register.js"></script>
+    <script>
+      const form = document.getElementById('createForm');
+      const newCodeInput = document.getElementById('newCode');
+      const tbody = document.querySelector('#codesTable tbody');
+
+      function render() {
+        const codes = window.getAuthCodes();
+        tbody.innerHTML = '';
+        codes.forEach(c => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${c.code}</td>
+            <td class="${c.used ? 'used' : ''}">${c.used ? 'Ya — ' + (c.usedBy || '') : 'Belum'}</td>
+            <td>${c.createdBy || ''} <small>(${new Date(c.createdAt).toLocaleString()})</small></td>
+            <td>
+              ${c.used ? '' : `<button data-code="${c.code}" class="markUsed">Tandai Terpakai</button>`}
+              <button data-code="${c.code}" class="delete">Hapus</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        const code = newCodeInput.value.trim();
+        if (!code) return alert('Masukkan kode valid');
+        try {
+          window.createAuthCode(code, 'admin');
+          newCodeInput.value = '';
+          render();
+        } catch (err) {
+          alert(err.message || 'Gagal membuat kode');
+        }
+      });
+
+      tbody.addEventListener('click', e => {
+        const btn = e.target.closest('button');
+        if (!btn) return;
+        const code = btn.getAttribute('data-code');
+        if (btn.classList.contains('delete')) {
+          if (!confirm('Yakin ingin menghapus kode ini secara permanen?')) return;
+          const codes = window.getAuthCodes().filter(c => c.code !== code);
+          localStorage.setItem('authCodes', JSON.stringify(codes));
+          render();
+        } else if (btn.classList.contains('markUsed')) {
+          if (!confirm('Tandai kode ini sebagai terpakai (ini akan mencegah pendaftaran dengan kode tersebut)?')) return;
+          // Mark as used without userId (admin manual override)
+          const codes = window.getAuthCodes();
+          const entry = codes.find(c => c.code === code);
+          if (entry) {
+            entry.used = true;
+            entry.usedAt = new Date().toISOString();
+            saveAndRender(codes);
+          }
+        }
+      });
+
+      function saveAndRender(codes) {
+        localStorage.setItem('authCodes', JSON.stringify(codes));
+        render();
+      }
+
+      // Initial render
+      render();
+    </script>
+  </body>
+</html>

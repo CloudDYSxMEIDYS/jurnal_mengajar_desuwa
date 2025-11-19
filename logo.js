@@ -1,10 +1,10 @@
 /**
  * ============================================================================
- * LOGO CUSTOMIZATION SYSTEM
+ * LOGO CUSTOMIZATION SYSTEM — PABRIK LOGO MINI
  * ============================================================================
- * Provides a customizable logo system with predefined templates.
- * Users can select templates, change emojis, colors, and sizes.
- * All settings are persisted to localStorage.
+ * A tiny, slightly eccentric factory for logos. Pick an emoji, fling some
+ * colors at it, and save the result in localStorage. No designers were harmed
+ * in the making of these gradients.
  * ============================================================================
  */
 

@@ -1,12 +1,10 @@
 /**
  * ============================================================================
- * MAIN APPLICATION MODULE - Journal Management System
+ * MAIN APPLICATION MODULE — JURNAL MENGAJAR (WITH EXTRA SPARKLES)
  * ============================================================================
- * Handles the core application logic:
- * - User information display
- * - Journal entry CRUD (Create, Read, Update, Delete)
- * - Filtering and searching journals
- * - Data persistence in localStorage
+ * The central nervous system for journals. It stores entries, displays
+ * them in tables, and remembers which human is currently logged in.
+ * All behavior is intentionally helpful and mildly dramatic.
  * ============================================================================
  */
 

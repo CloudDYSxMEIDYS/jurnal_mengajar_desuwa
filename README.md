@@ -28,7 +28,8 @@ This project now includes a **secure registration system** for both students and
 ### Enhanced Teacher Registration Security:
 
 **Teacher-Specific Validations:**
-- **NIP Validation**: Must be exactly 18 digits, matching Indonesian teacher ID format
+- **Authentication Code Validation**: Must be at least 4 characters (school-provided auth code)
+- **Auth Code Uniqueness**: Each teacher must use a unique authentication code
 - **Email Validation**: Must be a valid email format (required field)
 - **Subject Validation**: Must choose from a predefined list of valid subjects:
   - Informatika, Matematika, Fisika, Kimia, Biologi
@@ -41,7 +42,7 @@ This project now includes a **secure registration system** for both students and
   - At least one number (0-9)
   - At least one special character (!@#$%^&* etc)
 - **Username Validation**: 3-20 characters, must start with a letter, alphanumeric + underscore only
-- **Duplicate Prevention**: NIP uniqueness enforced (cannot register same teacher twice)
+- **Duplicate Prevention**: Auth code uniqueness enforced (cannot register same teacher twice)
 
 **Registration Features:**
 - **Separate Registration Pages**: Students and teachers register through different forms
@@ -54,7 +55,7 @@ This project now includes a **secure registration system** for both students and
 2. Choose "Daftar Siswa" or "Daftar Guru"
 3. Fill in required fields:
    - **Students**: Name, Email, Class, Username, Password
-   - **Teachers**: Name, NIP (18 digits), Email, Subject (dropdown), Username, Password
+   - **Teachers**: Name, Auth Code (dari sekolah), Email, Subject (dropdown), Username, Password
 4. For teachers: Watch password strength indicator turn green as you meet requirements
 5. Confirm password and submit
 6. Redirect to login page
@@ -88,15 +89,15 @@ await registerUser({
   email: 'john@school.com',
   role: 'student',                 // or 'teacher'
   nisn: '1234567890',              // for students
-  nip: '198506141234567890',       // for teachers (18 digits)
+  authCode: 'GURU2025ABC',         // for teachers (school-provided auth code)
   mapelMengajar: 'Informatika'     // for teachers (must be from valid list)
 });
 
 // Authenticate user
 const user = await authenticateUser('john_doe', 'SecurePass123!');
 
-// Validate teacher NIP format
-const isValid = validateTeacherNIP('198506141234567890'); // true if 18 digits
+// Validate teacher auth code format
+const isValid = validateTeacherAuthCode('GURU2025ABC'); // true if 4+ characters
 
 // Validate email format
 const isValid = validateEmail('john@school.com'); // true if valid email

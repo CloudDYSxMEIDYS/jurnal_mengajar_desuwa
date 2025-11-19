@@ -1,11 +1,11 @@
 
 /**
  * ============================================================================
- * AUTHENTICATION MODULE
+ * AUTHENTICATION MODULE — A DRAMA IN ONE ACT
  * ============================================================================
- * Handles user login/logout and session management.
- * Supports both registered users and demo accounts.
- * Uses localStorage to maintain session state.
+ * Responsible for politely convincing the browser that a person is who they
+ * claim to be. Includes a few demo accounts for quick testing and general
+ * merriment. Session postcards live in localStorage.
  * ============================================================================
  */
 
@@ -101,7 +101,7 @@ function setupLoginForm() {
         
         // Validate inputs are not empty
         if (!username || !password) {
-            showError('Nama pengguna dan kata sandi harus diisi');
+            showError('Nama pengguna dan kata sandi harus diisi — tolong isi dulu, ya.');
             return;
         }
 
@@ -130,7 +130,7 @@ function setupLoginForm() {
                 }
                 
                 // Show success message and redirect
-                showSuccess('Login berhasil! Mengalihkan...');
+                showSuccess('Selamat datang — login berhasil! Mengalihkan...');
                 setTimeout(() => {
                     window.location.href = 'index.html';
                 }, 500);
@@ -159,13 +159,13 @@ function setupLoginForm() {
                 localStorage.removeItem(REMEMBER_KEY);
             }
             
-            showSuccess('Login berhasil! Mengalihkan...');
+            showSuccess('Selamat datang — login berhasil! Mengalihkan...');
             setTimeout(() => {
                 window.location.href = 'index.html';
             }, 500);
         } else {
             // Neither registered user nor demo user matched
-            showError('Nama pengguna atau kata sandi salah');
+            showError('Nama pengguna atau kata sandi salah — coba lagi atau daftar dulu.');
             document.getElementById('password').value = ''; // Clear password field
         }
     });
@@ -178,12 +178,12 @@ function setupLoginForm() {
 function showError(message) {
     const errorDiv = document.getElementById('errorMessage');
     if (errorDiv) {
-        errorDiv.textContent = message;
+        errorDiv.textContent = '⚠️ ' + message;
         errorDiv.classList.remove('hidden');
-        // Auto-hide after 5 seconds
+        // Auto-hide after a moment of drama
         setTimeout(() => {
             errorDiv.classList.add('hidden');
-        }, 5000);
+        }, 6000);
     }
 }
 
@@ -194,7 +194,7 @@ function showError(message) {
 function showSuccess(message) {
     const errorDiv = document.getElementById('errorMessage');
     if (errorDiv) {
-        errorDiv.textContent = message;
+        errorDiv.textContent = '✅ ' + message;
         errorDiv.classList.remove('hidden', 'bg-red-500/20', 'border-red-500/50', 'text-red-200');
         errorDiv.classList.add('bg-green-500/20', 'border-green-500/50', 'text-green-200');
     }
@@ -205,7 +205,7 @@ function showSuccess(message) {
  * Clears session data and redirects to login page
  */
 function logout() {
-    if (confirm('Apakah Anda yakin ingin keluar?')) {
+    if (confirm('Keluar sekarang? (Tenang, jurnal tetap aman)')) {
         localStorage.removeItem(LOGIN_KEY);      // Clear session
         localStorage.removeItem(REMEMBER_KEY);   // Clear remembered username
         window.location.href = 'login.html';     // Redirect to login

@@ -1,10 +1,10 @@
 /**
  * ============================================================================
- * USER REGISTRATION & AUTHENTICATION MODULE
+ * THE GLORIOUS REGISTRATION & AUTHENTICATION WIZARDRY
  * ============================================================================
- * Handles secure user registration, password hashing, and authentication.
- * Uses SHA-256 for demo/development (client-side).
- * ⚠️  For PRODUCTION: Use bcrypt on server-side instead!
+ * This script politely asks humans (and sometimes opinionated laptops) to
+ * create accounts. Passwords get a SHA-256 costume for demo shows — for
+ * real-world security use bcrypt on a proper server and give it a cape.
  * ============================================================================
  */
 
@@ -46,14 +46,13 @@ async function verifyPassword(password, hash) {
  */
 
 /**
- * Validate teacher NIP (Nomor Induk Pegawai - Indonesian Teacher ID)
- * Must be exactly 18 digits to match government ID standards
- * @param {string} nip - The NIP to validate
- * @returns {boolean} - True if NIP is valid (exactly 18 digits)
+ * Validate teacher authentication code
+ * Auth code must be non-empty and at least 4 characters
+ * @param {string} authCode - The authentication code to validate
+ * @returns {boolean} - True if auth code is valid
  */
-function validateTeacherNIP(nip) {
-  const nipRegex = /^\d{18}$/; // Must be exactly 18 digits, nothing else
-  return nipRegex.test(nip);
+function validateTeacherAuthCode(authCode) {
+  return authCode && authCode.trim().length >= 4; // At least 4 characters
 }
 
 /**
@@ -130,55 +129,102 @@ function validateTeacherSubject(subject) {
 
 // User registration and storage
 const REGISTERED_USERS_KEY = 'registeredUsers';
+// Auth codes storage (created/managed by admin)
+const AUTH_CODES_KEY = 'authCodes';
+
+function getAuthCodes() {
+  const raw = localStorage.getItem(AUTH_CODES_KEY);
+  return raw ? JSON.parse(raw) : [];
+}
+
+function saveAuthCodes(codes) {
+  localStorage.setItem(AUTH_CODES_KEY, JSON.stringify(codes));
+}
+
+function createAuthCode(code, createdBy = 'admin') {
+  const codes = getAuthCodes();
+  if (codes.find(c => c.code === code)) {
+    throw new Error('Kode autentikasi sudah ada');
+  }
+  const entry = {
+    code: code.trim(),
+    used: false,
+    createdBy,
+    createdAt: new Date().toISOString(),
+    usedBy: null,
+    usedAt: null
+  };
+  codes.push(entry);
+  saveAuthCodes(codes);
+  return entry;
+}
+
+function markAuthCodeUsed(code, userId) {
+  const codes = getAuthCodes();
+  const entry = codes.find(c => c.code === code);
+  if (!entry) throw new Error('Kode autentikasi tidak ditemukan');
+  entry.used = true;
+  entry.usedBy = userId;
+  entry.usedAt = new Date().toISOString();
+  saveAuthCodes(codes);
+  return entry;
+}
+
+function isAuthCodeValid(code) {
+  const codes = getAuthCodes();
+  const entry = codes.find(c => c.code === code);
+  return !!entry && !entry.used;
+}
+
 
 async function registerUser(userData) {
   // Validate input
   if (!userData.username || !userData.password || !userData.fullName || !userData.role) {
-    throw new Error('All fields are required');
+    throw new Error('Semua bidang harus diisi — jangan biarkan kolom kosong seperti hati tanpa kopi.');
   }
 
   // Validate username format
   if (!validateUsername(userData.username)) {
-    throw new Error('Username harus 3-20 karakter, dimulai dengan huruf, hanya alfanumerik & underscore');
+    throw new Error('Username harus 3-20 karakter, mulai huruf; boleh angka & underscore — pilih yang unik dan mudah diingat.');
   }
 
   // Validate password strength
   const passwordCheck = validateStrongPassword(userData.password);
   if (!passwordCheck.isStrong) {
     const missing = [];
-    if (!passwordCheck.requirements.uppercase) missing.push('huruf besar');
+    if (!passwordCheck.requirements.uppercase) missing.push('huruf BESAR');
     if (!passwordCheck.requirements.lowercase) missing.push('huruf kecil');
     if (!passwordCheck.requirements.number) missing.push('angka');
-    if (!passwordCheck.requirements.special) missing.push('karakter khusus (!@#$%^&* dll)');
-    throw new Error(`Password harus mengandung: ${missing.join(', ')}`);
+    if (!passwordCheck.requirements.special) missing.push('simbol rahasia (!@#$%...)');
+    throw new Error(`Password lemah — tambahkan: ${missing.join(', ')}. (Jangan pakai 'password123' ya.)`);
   }
 
   // Check if username already exists
   const users = getRegisteredUsers();
   if (users.find(u => u.username === userData.username)) {
-    throw new Error('Username sudah terdaftar');
+    throw new Error('Nama pengguna sudah terdaftar — coba variasi lain.');
   }
 
   // Teacher-specific validations
   if (userData.role === 'teacher') {
-    // Validate NIP format (must be 18 digits)
-    if (!userData.nip || !validateTeacherNIP(userData.nip)) {
-      throw new Error('NIP harus 18 digit angka');
+    // Validate authentication code (must be at least 4 characters)
+    if (!userData.authCode || !validateTeacherAuthCode(userData.authCode)) {
+      throw new Error('Kode autentikasi bermasalah — minimal 4 karakter. Cek kembali kode dari admin.');
     }
 
-    // Check if NIP already registered
-    if (users.find(u => u.nip === userData.nip)) {
-      throw new Error('NIP sudah terdaftar');
+    // Check if auth code exists and is unused in the admin list
+    if (!isAuthCodeValid(userData.authCode)) {
+      throw new Error('Kode autentikasi tidak valid atau sudah dipakai. Minta kode baru ke admin.');
     }
 
     // Validate email format
     if (!userData.email || !validateEmail(userData.email)) {
-      throw new Error('Format email tidak valid');
+      throw new Error('Format email tidak valid — contoh yang benar: nama@sekolah.id');
     }
 
     // Validate subject is from allowed list
     if (!userData.mapelMengajar || !validateTeacherSubject(userData.mapelMengajar)) {
-      throw new Error(`Mata pelajaran tidak valid. Pilih dari: ${VALID_SUBJECTS.join(', ')}`);
+      throw new Error(`Mata pelajaran tidak valid. Pilih dari daftar resmi: ${VALID_SUBJECTS.join(', ')}.`);
     }
   }
 
@@ -192,17 +238,27 @@ async function registerUser(userData) {
     passwordHash: hashedPassword,
     fullName: userData.fullName,
     email: userData.email || '',
-    role: userData.role, // 'student' or 'teacher'
-    nisn: userData.nisn || '', // for students
-    nip: userData.nip || '', // for teachers
-    mapelMengajar: userData.mapelMengajar || '', // for teachers
-    kelasMengajar: userData.kelasMengajar || '', // for teachers
+    role: userData.role,                          // 'student' or 'teacher'
+    nisn: userData.nisn || '',                    // for students
+    authCode: userData.authCode || '',            // for teachers (authentication code)
+    mapelMengajar: userData.mapelMengajar || '',  // for teachers
+    kelasMengajar: userData.kelasMengajar || '',  // for teachers (optional)
     createdAt: new Date().toISOString()
   };
 
   // Save user
   users.push(newUser);
   localStorage.setItem(REGISTERED_USERS_KEY, JSON.stringify(users));
+
+  // If teacher, mark the auth code as used and attach usedBy metadata
+  if (userData.role === 'teacher' && userData.authCode) {
+    try {
+      markAuthCodeUsed(userData.authCode, newUser.id);
+    } catch (err) {
+      // Non-fatal: log and continue; admins can fix the list manually if needed
+      console.warn('Ups — gagal menandai kode sebagai terpakai. Admin mungkin perlu memperbarui daftar.', err);
+    }
+  }
 
   return newUser.id;
 }
@@ -229,7 +285,7 @@ async function authenticateUser(username, password) {
     email: user.email,
     role: user.role,
     nisn: user.nisn,
-    nip: user.nip,
+    authCode: user.authCode,
     mapelMengajar: user.mapelMengajar,
     kelasMengajar: user.kelasMengajar
   };
@@ -277,3 +333,7 @@ window.authenticateUser = authenticateUser;
 window.getRegisteredUsers = getRegisteredUsers;
 window.getUserById = getUserById;
 window.hashPassword = hashPassword;
+window.getAuthCodes = getAuthCodes;
+window.createAuthCode = createAuthCode;
+window.markAuthCodeUsed = markAuthCodeUsed;
+window.isAuthCodeValid = isAuthCodeValid;
