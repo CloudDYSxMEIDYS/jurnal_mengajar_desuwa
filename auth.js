@@ -1,4 +1,18 @@
 
+/**
+ * ============================================================================
+ * AUTHENTICATION MODULE
+ * ============================================================================
+ * Handles user login/logout and session management.
+ * Supports both registered users and demo accounts.
+ * Uses localStorage to maintain session state.
+ * ============================================================================
+ */
+
+/**
+ * Demo user accounts for testing (hardcoded for development)
+ * In production, these should be removed and all users stored server-side
+ */
 const DEMO_USERS = {
     'admin': {
         password: 'admin123',
@@ -18,15 +32,18 @@ const DEMO_USERS = {
         fullName: 'Siti Nurhaliza',
         email: 'siti@sekolah.com'
     }
-
-
-    
 };
 
-const LOGIN_KEY = 'userSession';
-const REMEMBER_KEY = 'rememberUser';
+// LocalStorage keys for session management
+const LOGIN_KEY = 'userSession';     // Stores current logged-in user data
+const REMEMBER_KEY = 'rememberUser'; // Stores username for "remember me" feature
 
-
+/**
+ * Initialize authentication on page load
+ * - Redirect unauthenticated users away from protected pages
+ * - Redirect authenticated users away from login page
+ * - Set up login form if on login page
+ */
 document.addEventListener('DOMContentLoaded', () => {
     const currentPage = window.location.pathname;
     const isLoginPage = currentPage.includes('login.html') || currentPage === '/';
@@ -34,58 +51,65 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const userSession = localStorage.getItem(LOGIN_KEY);
     
-    
+    // If on a protected page (like dashboard) but not logged in, redirect to login
     if (isAuthPage && !userSession) {
         window.location.href = 'login.html';
         return;
     }
     
-    
+    // If logged in and on login page, redirect to dashboard
     if (isLoginPage && userSession) {
         window.location.href = 'index.html';
         return;
     }
     
-    
+    // Set up login form handlers if on login page
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
         setupLoginForm();
     }
     
-    
+    // Set up logout button if present
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', logout);
     }
 });
 
+/**
+ * Set up the login form with event listeners and remembered user functionality
+ * Tries registered users first, then falls back to demo users
+ */
 function setupLoginForm() {
     const form = document.getElementById('loginForm');
     const errorMessage = document.getElementById('errorMessage');
     const rememberMe = document.getElementById('rememberMe');
     
-    
+    // Check if user had previously clicked "remember me"
     const rememberedUser = localStorage.getItem(REMEMBER_KEY);
     if (rememberedUser) {
         document.getElementById('username').value = rememberedUser;
         rememberMe.checked = true;
     }
     
+    // Handle form submission (login attempt)
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
         const username = document.getElementById('username').value.trim();
         const password = document.getElementById('password').value;
         
+        // Validate inputs are not empty
         if (!username || !password) {
             showError('Nama pengguna dan kata sandi harus diisi');
             return;
         }
 
-        // Try registered users first
+        // STEP 1: Try to authenticate with registered users (from register.js)
         try {
             const user = await authenticateUser(username, password);
             if (user) {
+                // Create session data with user info
                 const sessionData = {
                     id: user.id,
                     username: user.username,
@@ -95,14 +119,17 @@ function setupLoginForm() {
                     loginTime: new Date().toISOString()
                 };
                 
+                // Store session in localStorage
                 localStorage.setItem(LOGIN_KEY, JSON.stringify(sessionData));
                 
+                // Handle "remember me" checkbox
                 if (rememberMe.checked) {
                     localStorage.setItem(REMEMBER_KEY, username);
                 } else {
                     localStorage.removeItem(REMEMBER_KEY);
                 }
                 
+                // Show success message and redirect
                 showSuccess('Login berhasil! Mengalihkan...');
                 setTimeout(() => {
                     window.location.href = 'index.html';
@@ -113,7 +140,7 @@ function setupLoginForm() {
             console.error('Registration auth error:', err);
         }
 
-        // Fallback to demo users (for backward compatibility)
+        // STEP 2: Fallback to demo users (for backward compatibility during development)
         if (DEMO_USERS[username] && DEMO_USERS[username].password === password) {
             const user = DEMO_USERS[username];
             const sessionData = {
@@ -137,23 +164,33 @@ function setupLoginForm() {
                 window.location.href = 'index.html';
             }, 500);
         } else {
+            // Neither registered user nor demo user matched
             showError('Nama pengguna atau kata sandi salah');
-            document.getElementById('password').value = '';
+            document.getElementById('password').value = ''; // Clear password field
         }
     });
 }
 
+/**
+ * Display error message to user
+ * @param {string} message - Error message to display
+ */
 function showError(message) {
     const errorDiv = document.getElementById('errorMessage');
     if (errorDiv) {
         errorDiv.textContent = message;
         errorDiv.classList.remove('hidden');
+        // Auto-hide after 5 seconds
         setTimeout(() => {
             errorDiv.classList.add('hidden');
         }, 5000);
     }
 }
 
+/**
+ * Display success message to user
+ * @param {string} message - Success message to display
+ */
 function showSuccess(message) {
     const errorDiv = document.getElementById('errorMessage');
     if (errorDiv) {
@@ -163,13 +200,17 @@ function showSuccess(message) {
     }
 }
 
+/**
+ * Log out the current user
+ * Clears session data and redirects to login page
+ */
 function logout() {
     if (confirm('Apakah Anda yakin ingin keluar?')) {
-        localStorage.removeItem(LOGIN_KEY);
-        localStorage.removeItem(REMEMBER_KEY);
-        window.location.href = 'login.html';
+        localStorage.removeItem(LOGIN_KEY);      // Clear session
+        localStorage.removeItem(REMEMBER_KEY);   // Clear remembered username
+        window.location.href = 'login.html';     // Redirect to login
     }
 }
 
-
+// Make logout function available globally for HTML onclick handlers
 window.logout = logout;

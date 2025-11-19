@@ -1,7 +1,20 @@
-// Logo Customization System
+/**
+ * ============================================================================
+ * LOGO CUSTOMIZATION SYSTEM
+ * ============================================================================
+ * Provides a customizable logo system with predefined templates.
+ * Users can select templates, change emojis, colors, and sizes.
+ * All settings are persisted to localStorage.
+ * ============================================================================
+ */
 
+// LocalStorage key for storing the current logo configuration
 const LOGO_STORAGE_KEY = 'appLogo';
 
+/**
+ * Predefined logo templates with default settings
+ * Each template provides: name, emoji, color gradient, background class, description
+ */
 const LOGO_TEMPLATES = {
     modern: {
         name: 'Modern',
@@ -40,11 +53,20 @@ const LOGO_TEMPLATES = {
     }
 };
 
+/**
+ * LogoCustomizer Class
+ * Manages all logo configuration and customization
+ */
 class LogoCustomizer {
     constructor() {
+        // Load saved logo from localStorage, or use modern template as default
         this.currentLogo = this.loadLogo();
     }
 
+    /**
+     * Load logo configuration from localStorage
+     * @returns {Object} - Logo configuration object
+     */
     loadLogo() {
         const saved = localStorage.getItem(LOGO_STORAGE_KEY);
         return saved ? JSON.parse(saved) : {
@@ -56,11 +78,20 @@ class LogoCustomizer {
         };
     }
 
+    /**
+     * Save logo configuration to localStorage
+     * @param {Object} logo - Logo configuration to save
+     */
     saveLogo(logo) {
         this.currentLogo = logo;
         localStorage.setItem(LOGO_STORAGE_KEY, JSON.stringify(logo));
     }
 
+    /**
+     * Set the logo template (changes emoji and default colors)
+     * @param {string} templateName - Name of template to use
+     * @returns {boolean} - True if template was valid and applied
+     */
     setTemplate(templateName) {
         if (LOGO_TEMPLATES[templateName]) {
             const template = LOGO_TEMPLATES[templateName];
@@ -77,27 +108,49 @@ class LogoCustomizer {
         return false;
     }
 
+    /**
+     * Change the emoji displayed in the logo
+     * @param {string} emoji - Unicode emoji character
+     */
     setEmoji(emoji) {
         this.currentLogo.emoji = emoji;
         this.saveLogo(this.currentLogo);
     }
 
+    /**
+     * Change the gradient colors of the logo
+     * @param {string} colorFrom - Tailwind color class for gradient start
+     * @param {string} colorTo - Tailwind color class for gradient end
+     */
     setColors(colorFrom, colorTo) {
         this.currentLogo.colors = [colorFrom, colorTo];
         this.saveLogo(this.currentLogo);
     }
 
+    /**
+     * Set custom text to display (optional)
+     * @param {string} text - Custom text
+     */
     setCustomText(text) {
         this.currentLogo.customText = text;
         this.saveLogo(this.currentLogo);
     }
 
+    /**
+     * Change the size of the logo
+     * @param {string} size - Size: 'sm', 'base', 'lg', 'xl'
+     */
     setSize(size) {
         this.currentLogo.size = size;
         this.saveLogo(this.currentLogo);
     }
 
+    /**
+     * Generate HTML markup for the current logo
+     * @returns {string} - HTML string for the logo
+     */
     getHTML() {
+        // Map size names to Tailwind width/height classes
         const sizeClasses = {
             'sm': 'w-12 h-12',
             'base': 'w-16 h-16',
@@ -115,19 +168,30 @@ class LogoCustomizer {
         `;
     }
 
+    /**
+     * Get the current logo configuration
+     * @returns {Object} - Current logo settings
+     */
     getLogoConfig() {
         return this.currentLogo;
     }
 
+    /**
+     * Get all available logo templates
+     * @returns {Object} - All template definitions
+     */
     getAllTemplates() {
         return LOGO_TEMPLATES;
     }
 }
 
-// Create global instance
+// Create global instance of LogoCustomizer
 const logoCustomizer = new LogoCustomizer();
 
-// Helper function to render logo in DOM
+/**
+ * Helper function to render logo in a specific DOM element
+ * @param {string} containerId - ID of the DOM element to render logo into
+ */
 function renderLogo(containerId) {
     const container = document.getElementById(containerId);
     if (container) {
@@ -135,6 +199,8 @@ function renderLogo(containerId) {
     }
 }
 
-// Expose globally
+/**
+ * Export functions to global scope for use in HTML and other scripts
+ */
 window.logoCustomizer = logoCustomizer;
 window.renderLogo = renderLogo;

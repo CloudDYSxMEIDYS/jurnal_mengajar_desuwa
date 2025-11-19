@@ -53,7 +53,7 @@ This project now includes a **secure registration system** for both students and
 1. Click "Daftar di sini" on the login page or go to `register.html`
 2. Choose "Daftar Siswa" or "Daftar Guru"
 3. Fill in required fields:
-   - **Students**: Name, NISN, Class, Username, Password
+   - **Students**: Name, Email, Class, Username, Password
    - **Teachers**: Name, NIP (18 digits), Email, Subject (dropdown), Username, Password
 4. For teachers: Watch password strength indicator turn green as you meet requirements
 5. Confirm password and submit
