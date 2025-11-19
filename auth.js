@@ -18,6 +18,9 @@ const DEMO_USERS = {
         fullName: 'Siti Nurhaliza',
         email: 'siti@sekolah.com'
     }
+
+
+    
 };
 
 const LOGIN_KEY = 'userSession';
@@ -68,21 +71,50 @@ function setupLoginForm() {
         rememberMe.checked = true;
     }
     
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
         const username = document.getElementById('username').value.trim();
         const password = document.getElementById('password').value;
         
-        
         if (!username || !password) {
             showError('Nama pengguna dan kata sandi harus diisi');
             return;
         }
-        
-        
+
+        // Try registered users first
+        try {
+            const user = await authenticateUser(username, password);
+            if (user) {
+                const sessionData = {
+                    id: user.id,
+                    username: user.username,
+                    fullName: user.fullName,
+                    role: user.role,
+                    email: user.email,
+                    loginTime: new Date().toISOString()
+                };
+                
+                localStorage.setItem(LOGIN_KEY, JSON.stringify(sessionData));
+                
+                if (rememberMe.checked) {
+                    localStorage.setItem(REMEMBER_KEY, username);
+                } else {
+                    localStorage.removeItem(REMEMBER_KEY);
+                }
+                
+                showSuccess('Login berhasil! Mengalihkan...');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 500);
+                return;
+            }
+        } catch (err) {
+            console.error('Registration auth error:', err);
+        }
+
+        // Fallback to demo users (for backward compatibility)
         if (DEMO_USERS[username] && DEMO_USERS[username].password === password) {
-            
             const user = DEMO_USERS[username];
             const sessionData = {
                 username: username,
@@ -94,20 +126,17 @@ function setupLoginForm() {
             
             localStorage.setItem(LOGIN_KEY, JSON.stringify(sessionData));
             
-            
             if (rememberMe.checked) {
                 localStorage.setItem(REMEMBER_KEY, username);
             } else {
                 localStorage.removeItem(REMEMBER_KEY);
             }
             
-            
             showSuccess('Login berhasil! Mengalihkan...');
             setTimeout(() => {
                 window.location.href = 'index.html';
             }, 500);
         } else {
-            
             showError('Nama pengguna atau kata sandi salah');
             document.getElementById('password').value = '';
         }

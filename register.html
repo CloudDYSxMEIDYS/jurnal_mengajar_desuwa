@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar - Sistem Jurnal Mengajar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gradient-to-br from-purple-600 via-pink-500 to-red-500 min-h-screen flex items-center justify-center py-8">
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-20 left-10 w-72 h-72 bg-white rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+        <div class="absolute top-40 right-10 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-2000"></div>
+        <div class="absolute bottom-20 left-1/2 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-4000"></div>
+    </div>
+
+    <div class="relative z-10 w-full max-w-2xl px-4">
+        <div class="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-8 border border-white/20">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-white mb-2">📝 Daftar Akun</h1>
+                <p class="text-gray-200">Buat akun untuk Siswa atau Guru</p>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="flex gap-4 mb-8 border-b border-white/20">
+                <button id="studentTab" onclick="switchTab('student')" class="flex-1 py-3 px-4 text-center font-semibold text-white border-b-2 border-pink-500 transition-all">
+                    👨‍🎓 Daftar Siswa
+                </button>
+                <button id="teacherTab" onclick="switchTab('teacher')" class="flex-1 py-3 px-4 text-center font-semibold text-gray-300 border-b-2 border-transparent hover:text-white transition-all">
+                    👨‍🏫 Daftar Guru
+                </button>
+            </div>
+
+            <!-- Student Registration Form -->
+            <form id="studentForm" class="space-y-4 block">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-100 mb-2">Nama Lengkap *</label>
+                        <input type="text" id="studentName" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:ring-2 focus:ring-pink-400" placeholder="Masukkan nama" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-100 mb-2">NISN (Nomor Induk Siswa Nasional) *</label>
+                        <input type="text" id="studentNisn" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:ring-2 focus:ring-pink-400" placeholder="NISN" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-100 mb-2">Email</label>
+                        <input type="email" id="studentEmail" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:ring-2 focus:ring-pink-400" placeholder="Email">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-100 mb-2">Kelas *</label>
+                        <select id="studentClass" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:ring-2 focus:ring-pink-400" required>
+                            <option value="">Pilih Kelas</option>
+                            <option value="8E">8E</option>
+                            <option value="8F">8F</option>
+                            <option value="8G">8G</option>
+                            <option value="8H">8H</option>
+                            <option value="9A">9A</option>
+                            <option value="9B">9B</option>
+                            <option value="9C">9C</option>
+                            <option value="9D">9D</option>
+                            <option value="9E">9E</option>
+                            <option value="9F">9F</option>
+                            <option value="9G">9G</option>
+                            <option value="9H">9H</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-100 mb-2">Username *</label>
+                        <input type="text" id="studentUsername" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:ring-2 focus:ring-pink-400" placeholder="Min 3 karakter" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-100 mb-2">Password *</label>
+                        <input type="password" id="studentPassword" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:ring-2 focus:ring-pink-400" placeholder="Min 6 karakter" required>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-100 mb-2">Konfirmasi Password *</label>
+                    <input type="password" id="studentPasswordConfirm" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:ring-2 focus:ring-pink-400" placeholder="Masukkan ulang password" required>
+                </div>
+                <div id="studentError" class="hidden p-3 rounded-lg bg-red-500/20 border border-red-500/50 text-red-200 text-sm"></div>
+                <button type="submit" class="w-full py-2 px-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold rounded-lg transition-all transform hover:scale-105">
+                    Daftar Siswa
+                </button>
+            </form>
+
+            <!-- Teacher Registration Form -->
+            <form id="teacherForm" class="space-y-4 hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-100 mb-2">Nama Lengkap *</label>
+                        <input type="text" id="teacherName" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:ring-2 focus:ring-pink-400" placeholder="Masukkan nama" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-100 mb-2">NIP (Nomor Induk Pegawai) *</label>
+                        <input type="text" id="teacherNip" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:ring-2 focus:ring-pink-400" placeholder="NIP" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-100 mb-2">Email *</label>
+                        <input type="email" id="teacherEmail" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:ring-2 focus:ring-pink-400" placeholder="Email" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-100 mb-2">Mata Pelajaran *</label>
+                        <select id="teacherMapel" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:ring-2 focus:ring-pink-400" required>
+                            <option value="">Pilih Mata Pelajaran</option>
+                            <option value="Informatika">Informatika</option>
+                            <option value="Matematika">Matematika</option>
+                            <option value="Fisika">Fisika</option>
+                            <option value="Kimia">Kimia</option>
+                            <option value="Biologi">Biologi</option>
+                            <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+                            <option value="Bahasa Inggris">Bahasa Inggris</option>
+                            <option value="Sejarah">Sejarah</option>
+                            <option value="Geografi">Geografi</option>
+                            <option value="Seni Budaya">Seni Budaya</option>
+                            <option value="Pendidikan Jasmani">Pendidikan Jasmani</option>
+                            <option value="Agama Islam">Agama Islam</option>
+                            <option value="Agama Kristen">Agama Kristen</option>
+                            <option value="Agama Hindu">Agama Hindu</option>
+                            <option value="Agama Buddha">Agama Buddha</option>
+                            <option value="Pendidikan Kewarganegaraan">Pendidikan Kewarganegaraan</option>
+                            <option value="Ekonomi">Ekonomi</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-100 mb-2">Username *</label>
+                        <input type="text" id="teacherUsername" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:ring-2 focus:ring-pink-400" placeholder="Min 3 karakter" required>
+                    </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-100 mb-2">Password *</label>
+                    <input type="password" id="teacherPassword" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:ring-2 focus:ring-pink-400" placeholder="Kombinasi huruf, angka, & simbol" required>
+                    <div id="teacherPasswordRequirements" class="mt-2 space-y-1 text-xs hidden">
+                        <div id="reqTeacherUpper" class="text-gray-300">❌ Huruf besar (A-Z)</div>
+                        <div id="reqTeacherLower" class="text-gray-300">❌ Huruf kecil (a-z)</div>
+                        <div id="reqTeacherNumber" class="text-gray-300">❌ Angka (0-9)</div>
+                        <div id="reqTeacherSpecial" class="text-gray-300">❌ Simbol (!@#$%^&* dll)</div>
+                    </div>
+                </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-100 mb-2">Konfirmasi Password *</label>
+                    <input type="password" id="teacherPasswordConfirm" class="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-300 focus:ring-2 focus:ring-pink-400" placeholder="Masukkan ulang password" required>
+                </div>
+                <div id="teacherError" class="hidden p-3 rounded-lg bg-red-500/20 border border-red-500/50 text-red-200 text-sm"></div>
+                <button type="submit" class="w-full py-2 px-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold rounded-lg transition-all transform hover:scale-105">
+                    Daftar Guru
+                </button>
+            </form>
+
+            <!-- Footer -->
+            <div class="mt-6 text-center">
+                <p class="text-gray-300 text-sm">
+                    Sudah punya akun? 
+                    <a href="login.html" class="text-pink-300 hover:text-pink-200 font-semibold transition-colors">Masuk di sini</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="register.js"></script>
+    <script>
+        function switchTab(tab) {
+            const studentForm = document.getElementById('studentForm');
+            const teacherForm = document.getElementById('teacherForm');
+            const studentTab = document.getElementById('studentTab');
+            const teacherTab = document.getElementById('teacherTab');
+
+            if (tab === 'student') {
+                studentForm.classList.remove('hidden');
+                teacherForm.classList.add('hidden');
+                studentTab.classList.add('border-pink-500', 'text-white');
+                studentTab.classList.remove('border-transparent', 'text-gray-300');
+                teacherTab.classList.add('border-transparent', 'text-gray-300');
+                teacherTab.classList.remove('border-pink-500', 'text-white');
+            } else {
+                studentForm.classList.add('hidden');
+                teacherForm.classList.remove('hidden');
+                teacherTab.classList.add('border-pink-500', 'text-white');
+                teacherTab.classList.remove('border-transparent', 'text-gray-300');
+                studentTab.classList.add('border-transparent', 'text-gray-300');
+                studentTab.classList.remove('border-pink-500', 'text-white');
+            }
+        }
+
+        // Student registration handler
+        document.getElementById('studentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const errorDiv = document.getElementById('studentError');
+            errorDiv.classList.add('hidden');
+
+            try {
+                const name = document.getElementById('studentName').value.trim();
+                const nisn = document.getElementById('studentNisn').value.trim();
+                const email = document.getElementById('studentEmail').value.trim();
+                const kelas = document.getElementById('studentClass').value;
+                const username = document.getElementById('studentUsername').value.trim();
+                const password = document.getElementById('studentPassword').value;
+                const passwordConfirm = document.getElementById('studentPasswordConfirm').value;
+
+                if (password !== passwordConfirm) {
+                    throw new Error('Password tidak cocok');
+                }
+
+                await registerUser({
+                    username,
+                    password,
+                    fullName: name,
+                    email,
+                    role: 'student',
+                    nisn,
+                    kelasMengajar: kelas
+                });
+
+                alert('✅ Pendaftaran berhasil! Silakan login dengan akun Anda.');
+                window.location.href = 'login.html';
+            } catch (err) {
+                errorDiv.textContent = '❌ ' + err.message;
+                errorDiv.classList.remove('hidden');
+            }
+        });
+
+        // Teacher password strength monitor
+        document.getElementById('teacherPassword').addEventListener('input', (e) => {
+            const password = e.target.value;
+            const reqDiv = document.getElementById('teacherPasswordRequirements');
+            
+            if (password.length > 0) {
+                reqDiv.classList.remove('hidden');
+            } else {
+                reqDiv.classList.add('hidden');
+            }
+
+            // Check requirements
+            const hasUpper = /[A-Z]/.test(password);
+            const hasLower = /[a-z]/.test(password);
+            const hasNumber = /\d/.test(password);
+            const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+
+            updateRequirementUI('reqTeacherUpper', hasUpper);
+            updateRequirementUI('reqTeacherLower', hasLower);
+            updateRequirementUI('reqTeacherNumber', hasNumber);
+            updateRequirementUI('reqTeacherSpecial', hasSpecial);
+        });
+
+        // Teacher registration handler
+        document.getElementById('teacherForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const errorDiv = document.getElementById('teacherError');
+            errorDiv.classList.add('hidden');
+
+            try {
+                const name = document.getElementById('teacherName').value.trim();
+                const nip = document.getElementById('teacherNip').value.trim();
+                const email = document.getElementById('teacherEmail').value.trim();
+                const mapel = document.getElementById('teacherMapel').value;
+                const username = document.getElementById('teacherUsername').value.trim();
+                const password = document.getElementById('teacherPassword').value;
+                const passwordConfirm = document.getElementById('teacherPasswordConfirm').value;
+
+                // Validation
+                if (!name || !nip || !email || !mapel || !username || !password) {
+                    throw new Error('Semua field harus diisi');
+                }
+
+                if (password !== passwordConfirm) {
+                    throw new Error('Password tidak cocok');
+                }
+
+                await registerUser({
+                    username,
+                    password,
+                    fullName: name,
+                    email,
+                    role: 'teacher',
+                    nip,
+                    mapelMengajar: mapel
+                });
+
+                alert('✅ Pendaftaran berhasil! Silakan login dengan akun Anda.');
+                window.location.href = 'login.html';
+            } catch (err) {
+                errorDiv.textContent = '❌ ' + err.message;
+                errorDiv.classList.remove('hidden');
+            }
+        });
+
+        // Helper function to update requirement UI
+        function updateRequirementUI(elementId, isMet) {
+            const elem = document.getElementById(elementId);
+            if (isMet) {
+                elem.classList.remove('text-gray-300');
+                elem.classList.add('text-green-300');
+                elem.textContent = elem.textContent.replace('❌', '✅');
+            } else {
+                elem.classList.add('text-gray-300');
+                elem.classList.remove('text-green-300');
+                elem.textContent = elem.textContent.replace('✅', '❌');
+            }
+        }
+    </script>
+</body>
+</html>

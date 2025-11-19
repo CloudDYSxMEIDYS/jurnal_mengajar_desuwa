@@ -1,0 +1,29 @@
+type User @table {
+  displayName: String!
+  createdAt: Timestamp!
+  email: String
+  photoUrl: String
+}
+
+type Entry @table {
+  title: String!
+  content: String!
+  entryDate: Timestamp!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  mood: String
+  user: User
+}
+
+type Category @table {
+  name: String!
+  createdAt: Timestamp!
+  description: String
+  user: User
+}
+
+type EntryCategory @table(key: ["entry", "category"]) {
+  entry: Entry!
+  category: Category!
+  createdAt: Timestamp!
+}

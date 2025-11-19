@@ -9,9 +9,9 @@
 </head>
 <body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen">
     <div class="container mx-auto px-4 py-8">
-        <!-- Header -->
+        
         <div class="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl shadow-xl p-6 mb-8">
-            <h1 class="text-3xl font-bold text-white">🎨 Customizer Logo</h1>
+            <h1 class="text-3xl font-bold text-white"> Customizer Logo</h1>
             <p class="text-purple-100 mt-2">Desain logo untuk aplikasi Anda</p>
         </div>
 
@@ -21,34 +21,33 @@
                 <div class="bg-white/10 backdrop-blur-md rounded-xl shadow-xl p-6 border border-white/20 sticky top-8">
                     <h2 class="text-lg font-semibold text-white mb-6">Preview Logo</h2>
                     <div id="logoPreview" class="flex items-center justify-center bg-white/10 rounded-lg p-12 mb-6 border border-white/20 min-h-48">
-                        <!-- Logo will be rendered here -->
+
                     </div>
                     <div class="text-center">
                         <button onclick="downloadLogo()" class="w-full px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition-all duration-200 mb-2">
-                            📥 Download Logo
+                             Download Logo
                         </button>
                         <button onclick="resetLogo()" class="w-full px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg transition-all duration-200">
-                            🔄 Reset
+                             Reset
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Right: Customization Options -->
+
             <div class="lg:col-span-2">
-                <!-- Template Selection -->
+                
                 <div class="bg-white/10 backdrop-blur-md rounded-xl shadow-xl p-6 border border-white/20 mb-6">
-                    <h3 class="text-lg font-semibold text-white mb-4">1️⃣ Pilih Template</h3>
+                    <h3 class="text-lg font-semibold text-white mb-4"> <span>1</span>Pilih Template</h3>
                     <div class="grid grid-cols-2 md:grid-cols-3 gap-3" id="templateList">
-                        <!-- Templates will be generated here -->
                     </div>
                 </div>
 
-                <!-- Emoji Selection -->
+                
                 <div class="bg-white/10 backdrop-blur-md rounded-xl shadow-xl p-6 border border-white/20 mb-6">
-                    <h3 class="text-lg font-semibold text-white mb-4">2️⃣ Pilih Emoji</h3>
+                    <h3 class="text-lg font-semibold text-white mb-4"><span>2</span> Pilih Emoji</h3>
                     <div class="grid grid-cols-4 gap-2" id="emojiList">
-                        <!-- Emojis will be generated here -->
+                        
                     </div>
                     <div class="mt-4">
                         <label class="block text-sm font-medium text-gray-100 mb-2">atau masukkan emoji custom:</label>
@@ -56,41 +55,40 @@
                     </div>
                 </div>
 
-                <!-- Color Selection -->
+                
                 <div class="bg-white/10 backdrop-blur-md rounded-xl shadow-xl p-6 border border-white/20 mb-6">
-                    <h3 class="text-lg font-semibold text-white mb-4">3️⃣ Pilih Warna</h3>
+                    <h3 class="text-lg font-semibold text-white mb-4"><span>3</span> Pilih Warna</h3>
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-100 mb-2">Warna Awal (From)</label>
                             <div class="grid grid-cols-4 gap-2" id="colorFromList">
-                                <!-- Colors will be generated here -->
+                                
                             </div>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-100 mb-2">Warna Akhir (To)</label>
                             <div class="grid grid-cols-4 gap-2" id="colorToList">
-                                <!-- Colors will be generated here -->
+                                
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Size Selection -->
                 <div class="bg-white/10 backdrop-blur-md rounded-xl shadow-xl p-6 border border-white/20 mb-6">
-                    <h3 class="text-lg font-semibold text-white mb-4">4️⃣ Ukuran Logo</h3>
+                    <h3 class="text-lg font-semibold text-white mb-4"><span>4</span> Ukuran Logo</h3>
                     <div class="grid grid-cols-4 gap-2" id="sizeList">
-                        <!-- Sizes will be generated here -->
+                        
                     </div>
                 </div>
 
-                <!-- Apply Button -->
+                
                 <button onclick="applyLogo()" class="w-full px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold rounded-lg transition-all duration-200 transform hover:scale-105">
                     ✅ Terapkan Logo
                 </button>
             </div>
         </div>
 
-        <!-- Back Button -->
+        
         <div class="mt-8 text-center">
             <a href="index.html" class="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg transition-all duration-200 inline-block">
                 ← Kembali ke Dashboard
@@ -101,10 +99,9 @@
     <script src="auth.js"></script>
     <script src="logo.js"></script>
     <script>
-        // Available emojis for logo
-        const AVAILABLE_EMOJIS = ['📚', '🎓', '✨', '📖', '🌟', '📝', '🎯', '💡', '🔥', '🚀', '🎨', '📊'];
         
-        // Available colors
+        
+        
         const AVAILABLE_COLORS = [
             'from-purple-400', 'from-pink-400', 'from-blue-500', 'from-green-500',
             'from-yellow-400', 'from-orange-500', 'from-red-500', 'from-indigo-500'
@@ -117,7 +114,7 @@
             { size: 'xl', label: 'Extra Besar' }
         ];
 
-        // Initialize page
+        
         document.addEventListener('DOMContentLoaded', () => {
             renderLogoPreview();
             renderTemplates();
@@ -172,7 +169,7 @@
         function renderColors() {
             const current = logoCustomizer.getLogoConfig();
             
-            // From colors
+            
             const fromContainer = document.getElementById('colorFromList');
             fromContainer.innerHTML = AVAILABLE_COLORS.map(color => `
                 <button 
@@ -186,7 +183,7 @@
                 </button>
             `).join('');
 
-            // To colors
+            
             const toContainer = document.getElementById('colorToList');
             toContainer.innerHTML = AVAILABLE_COLORS.map(color => `
                 <button 
@@ -268,7 +265,7 @@
 
         function applyLogo() {
             renderLogoPreview();
-            // Update logos in index.html and login.html
+            
             const notification = document.createElement('div');
             notification.className = 'fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg bg-green-500 text-white';
             notification.textContent = '✅ Logo berhasil diterapkan!';
@@ -287,7 +284,7 @@
         }
 
         function downloadLogo() {
-            alert('💾 Fitur download tersedia untuk versi premium. Logo sudah disimpan di browser Anda.');
+            alert(' Fitur download tersedia untuk versi premium. Logo sudah disimpan di browser Anda.');
         }
     </script>
 </body>
