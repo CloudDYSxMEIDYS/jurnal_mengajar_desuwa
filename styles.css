@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+/* Override Tailwind text-white to use simple white color */
+.text-white {
+    color: #000000;
+}
+
 /* Base styles */
 body { font-family: 'Inter', sans-serif; }
 

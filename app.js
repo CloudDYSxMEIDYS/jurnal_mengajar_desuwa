@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
 /**
  * Load user information from session storage and display in header
  * Retrieves user data set during login, shows name and role
+ * Also controls form visibility based on user role (students cannot edit)
  */
 function loadUserInfo() {
     const userSession = localStorage.getItem('userSession');
@@ -55,21 +56,39 @@ function loadUserInfo() {
         const userName = document.getElementById('userName');
         const userRole = document.getElementById('userRole');
         const teacherName = document.getElementById('teacherName');
+        const formContainer = document.getElementById('formContainer');
         
         // Display user's full name (or username if name not set)
         if (userName) {
             userName.textContent = currentUser.fullName || currentUser.username;
         }
         
-        // Display user's role with icon
+        // Display user's role with friendly labels
         if (userRole) {
-            const roleDisplay = currentUser.role === 'admin' ? 'Admin' : 'Guru';
+            let roleDisplay = 'Pengguna';
+            if (currentUser.role === 'admin') roleDisplay = 'Admin';
+            else if (currentUser.role === 'teacher') roleDisplay = 'Guru';
+            else if (currentUser.role === 'student') roleDisplay = 'Siswa';
             userRole.textContent = roleDisplay;
         }
         
-        // Display teacher name in header
+        // Display teacher name in header (only for teachers and admins)
         if (teacherName) {
-            teacherName.textContent = `Guru Mapel ${currentUser.fullName || currentUser.username}`;
+            if (currentUser.role === 'teacher' || currentUser.role === 'admin') {
+                teacherName.textContent = `Guru Mapel ${currentUser.fullName || currentUser.username}`;
+            } else if (currentUser.role === 'student') {
+                teacherName.textContent = `Siswa ${currentUser.fullName || currentUser.username}`;
+            }
+        }
+        
+        // Hide the form container for students (they can only view journals)
+        // Only admins and teachers can create/edit journals
+        if (formContainer) {
+            if (currentUser.role === 'student') {
+                formContainer.style.display = 'none';
+            } else {
+                formContainer.style.display = 'block';
+            }
         }
     }
 }
@@ -234,7 +253,23 @@ function renderTable() {
     }
 
     // Build the table with all filtered journals — show row number, date, time, class, attendance, and action buttons
-    tableBody.innerHTML = filteredData.map((jurnal, index) => `
+    tableBody.innerHTML = filteredData.map((jurnal, index) => {
+        // Build action buttons based on user role — students can only view, teachers and admins can edit/delete
+        let actionCell = '';
+        if (currentUser && (currentUser.role === 'teacher' || currentUser.role === 'admin')) {
+            // Teachers and admins can edit and delete
+            actionCell = `<td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <button data-id="${jurnal.id}" class="edit-btn text-indigo-600 hover:text-indigo-900 mr-3 transition-colors duration-200">Edit</button>
+                <button data-id="${jurnal.id}" class="delete-btn text-red-600 hover:text-red-900 transition-colors duration-200">Hapus</button>
+            </td>`;
+        } else {
+            // Students can only view — no action buttons
+            actionCell = `<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-400">
+                View Only
+            </td>`;
+        }
+
+        return `
         <tr class="hover:bg-gray-50 transition-colors duration-200">
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${index + 1}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -265,20 +300,19 @@ function renderTable() {
                     ${jurnal.uraianMateri}
                 </div>
             </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button data-id="${jurnal.id}" class="edit-btn text-indigo-600 hover:text-indigo-900 mr-3 transition-colors duration-200">Edit</button>
-                <button data-id="${jurnal.id}" class="delete-btn text-red-600 hover:text-red-900 transition-colors duration-200">Hapus</button>
-            </td>
-        </tr>
-    `).join('');
+            ${actionCell}
+        </tr>`;
+    }).join('');
 
-    // Attach click handlers to the Edit and Delete buttons that were just created
-    document.querySelectorAll('.edit-btn').forEach(btn => 
-        btn.addEventListener('click', e => editJurnal(Number(e.currentTarget.dataset.id)))
-    );
-    document.querySelectorAll('.delete-btn').forEach(btn => 
-        btn.addEventListener('click', e => deleteJurnal(Number(e.currentTarget.dataset.id)))
-    );
+    // Attach click handlers to the Edit and Delete buttons that were just created (only if user can edit)
+    if (currentUser && (currentUser.role === 'teacher' || currentUser.role === 'admin')) {
+        document.querySelectorAll('.edit-btn').forEach(btn => 
+            btn.addEventListener('click', e => editJurnal(Number(e.currentTarget.dataset.id)))
+        );
+        document.querySelectorAll('.delete-btn').forEach(btn => 
+            btn.addEventListener('click', e => deleteJurnal(Number(e.currentTarget.dataset.id)))
+        );
+    }
 }
 
 /**
