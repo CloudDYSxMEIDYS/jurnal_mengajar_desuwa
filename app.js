@@ -233,7 +233,7 @@ function renderTable() {
         return;
     }
 
-    // Build table HTML with all journals
+    // Build the table with all filtered journals — show row number, date, time, class, attendance, and action buttons
     tableBody.innerHTML = filteredData.map((jurnal, index) => `
         <tr class="hover:bg-gray-50 transition-colors duration-200">
             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${index + 1}</td>
@@ -272,7 +272,7 @@ function renderTable() {
         </tr>
     `).join('');
 
-    // Attach event listeners to edit and delete buttons
+    // Attach click handlers to the Edit and Delete buttons that were just created
     document.querySelectorAll('.edit-btn').forEach(btn => 
         btn.addEventListener('click', e => editJurnal(Number(e.currentTarget.dataset.id)))
     );
